@@ -858,7 +858,7 @@ nav {
   border-radius: var(--radius); overflow: hidden; margin-bottom: 12px;
 }
 .my-profile-photo {
-  width: 100%; height: 180px; background: var(--bg2);
+  width: 100%; height: 280px; background: var(--bg2);
   display: flex; align-items: center; justify-content: center;
   font-size: 5rem; overflow: hidden;
 }
@@ -934,10 +934,75 @@ footer {
 @keyframes fadeUp { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
 .anim-fade { animation: fadeUp 0.35s ease both; }
 
+.voice-big-btn {
+  background: var(--red-dim);
+  border: 1.5px solid rgba(255,92,108,0.3);
+  border-radius: var(--radius-sm);
+  color: var(--red);
+  font-size: 1.2rem;
+  padding: 0 14px;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.12s;
+  flex-shrink: 0;
+  min-width: 46px;
+  display: flex; align-items: center; justify-content: center;
+}
+.voice-big-btn:hover { background: var(--red-mid); }
+.voice-big-btn.listening {
+  background: var(--red);
+  color: #fff;
+  animation: pulse 0.8s ease-in-out infinite alternate;
+}
+@keyframes pulse { from { box-shadow: 0 0 0 0 var(--red-glow); } to { box-shadow: 0 0 0 8px transparent; } }
+
 @media (max-width: 380px) {
   .hero-title { font-size: 1.85rem; }
   .fg2 { grid-template-columns: 1fr; }
 }
+
+/* ── LIGHT THEME ── */
+body.light {
+  --bg:        #F5F4F0;
+  --bg2:       #EEECEA;
+  --bg3:       #E6E4E0;
+  --surface:   #FFFFFF;
+  --surface2:  #F8F7F4;
+  --surface3:  #F0EEE9;
+  --border:    rgba(0,0,0,0.08);
+  --border2:   rgba(0,0,0,0.13);
+  --border3:   rgba(0,0,0,0.20);
+  --text:      #1A1A22;
+  --text2:     #5A5A6A;
+  --text3:     #AAAABC;
+  --red-glow:  rgba(255,92,108,0.18);
+  --red-dim:   rgba(255,92,108,0.08);
+  --red-mid:   rgba(255,92,108,0.14);
+  --teal-dim:  rgba(0,175,155,0.10);
+  --green-dim: rgba(30,160,90,0.10);
+  --amber-dim: rgba(210,155,20,0.10);
+  --purple-dim:rgba(120,90,220,0.10);
+}
+body.light nav {
+  background: rgba(245,244,240,0.95);
+}
+body.light .tabs {
+  background: rgba(245,244,240,0.97);
+}
+body.light .hero {
+  background: var(--bg);
+}
+body.light .hero-glow-1 {
+  background: radial-gradient(ellipse, rgba(255,92,108,0.12) 0%, transparent 70%);
+}
+body.light .match-overlay {
+  background: linear-gradient(135deg, rgba(220,60,80,0.97) 0%, rgba(140,30,55,0.98) 100%);
+}
+body.light .modal-sheet,
+body.light .safety-sheet {
+  background: var(--surface);
+}
+body.light body::after { opacity: 0.15; }
+
 </style>
 </head>
 <body>
@@ -950,6 +1015,10 @@ footer {
   </a>
   <div class="nav-right">
     <div class="location-badge">East Side <span>85710</span></div>
+    <button id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme"
+      style="width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text2);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;">
+      &#9728;&#65039;
+    </button>
   </div>
 </nav>
 
@@ -1002,7 +1071,7 @@ footer {
   <div class="panel active" id="panelCreate">
 
     <div id="createForm">
-      <div class="sh"><div class="sh-title">Create Profile</div></div>
+      <div class="sh"><div class="sh-title" id="formTitle">Create Profile</div></div>
 
       <!-- Photo Upload -->
       <div class="photo-zone" id="photoZone" onclick="handlePhotoClick()" role="button" tabindex="0" aria-label="Upload pup photo">
@@ -1024,13 +1093,19 @@ footer {
           <div class="card-label">Dog Info</div>
           <div class="frow">
             <label class="flabel" for="inp_name">Pup's Name *</label>
-            <input class="finput" type="text" id="inp_name" placeholder="e.g. Luna" maxlength="50" autocomplete="off"/>
+            <div style="display:flex;gap:8px;">
+              <input class="finput" type="text" id="inp_name" placeholder="Tap mic and say the name..." maxlength="50" autocomplete="off" style="flex:1"/>
+              <button class="voice-big-btn" id="vbtn_name" onclick="startVoiceBig('inp_name','vbtn_name')" aria-label="Speak pup name" type="button">&#127908;</button>
+            </div>
             <div class="ferr" id="err_name">Name is required</div>
           </div>
           <div class="fg2">
             <div>
               <label class="flabel" for="inp_breed">Breed</label>
-              <input class="finput" type="text" id="inp_breed" placeholder="e.g. Goldendoodle" maxlength="60" autocomplete="off"/>
+              <div style="display:flex;gap:8px;">
+                <input class="finput" type="text" id="inp_breed" placeholder="Tap mic and say breed..." maxlength="60" autocomplete="off" style="flex:1"/>
+                <button class="voice-big-btn" id="vbtn_breed" onclick="startVoiceBig('inp_breed','vbtn_breed')" aria-label="Speak breed" type="button">&#127908;</button>
+              </div>
             </div>
             <div>
               <label class="flabel" for="inp_age">Age *</label>
@@ -1125,20 +1200,20 @@ footer {
       <div class="card">
         <div class="card-inner">
           <div class="frow">
-            <label class="flabel" for="inp_bio">
-              About Your Pup
-              <button class="vbtn" onclick="startVoice('inp_bio')" aria-label="Voice input for bio">🎤 Speak</button>
-            </label>
-            <textarea class="ftextarea" id="inp_bio" maxlength="500"
-              placeholder="What is their vibe? Favorite trick? What kind of friend are they looking for?"></textarea>
+            <label class="flabel" for="inp_bio">About Your Pup</label>
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <textarea class="ftextarea" id="inp_bio" maxlength="500" style="flex:1"
+                placeholder="Tap mic and describe your pup... or type."></textarea>
+              <button class="voice-big-btn" id="vbtn_bio" onclick="startVoiceBig('inp_bio','vbtn_bio')" aria-label="Speak bio" type="button" style="margin-top:0;align-self:flex-start;padding:12px 14px;">&#127908;</button>
+            </div>
           </div>
           <div class="fg2">
             <div>
-              <label class="flabel" for="inp_owner">
-                Your First Name *
-                <button class="vbtn" onclick="startVoice('inp_owner')" aria-label="Voice input for name">🎤</button>
-              </label>
-              <input class="finput" type="text" id="inp_owner" placeholder="First name only" maxlength="40" autocomplete="given-name"/>
+              <label class="flabel" for="inp_owner">Your First Name *</label>
+              <div style="display:flex;gap:8px;">
+                <input class="finput" type="text" id="inp_owner" placeholder="Tap mic or type..." maxlength="40" autocomplete="given-name" style="flex:1"/>
+                <button class="voice-big-btn" id="vbtn_owner" onclick="startVoiceBig('inp_owner','vbtn_owner')" aria-label="Speak your name" type="button">&#127908;</button>
+              </div>
               <div class="ferr" id="err_owner">Required</div>
             </div>
             <div>
@@ -1447,6 +1522,7 @@ var allPups    = [];
 var activeFilter = 'all';
 var curViewPup = null;
 var watchOutcome = null;
+var isEditMode = false;
 
 // --- XSS SANITIZER (used on ALL user-supplied data before render) ---
 function esc(str) {
@@ -1475,6 +1551,14 @@ function switchTab(name) {
     if (tab) tab.classList.toggle('active', t === name);
     if (panel) panel.classList.toggle('active', t === name);
   });
+  // Reset edit mode if navigating away from Create
+  if (name !== 'Create' && isEditMode) {
+    isEditMode = false;
+    var titleEl = document.getElementById('formTitle');
+    if (titleEl) titleEl.textContent = 'Create Profile';
+    var btn = document.getElementById('createBtn');
+    if (btn) btn.textContent = "Create My Pup's Profile";
+  }
   if (name === 'Browse') loadBrowse();
   if (name === 'Matches') loadMatches();
   if (name === 'Watch') loadWatch();
@@ -1504,6 +1588,41 @@ function startVoice(fieldId) {
     el.placeholder = 'Try again';
     el.style.borderColor = '';
     setTimeout(function() { el.placeholder = ''; }, 1500);
+  };
+  r.start();
+}
+
+// --- VOICE BIG (for name and breed fields with button) ---
+function startVoiceBig(fieldId, btnId) {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast('Voice input requires Chrome or Safari.'); return; }
+  var el = document.getElementById(fieldId);
+  var btn = document.getElementById(btnId);
+  var r = new SR();
+  r.lang = 'en-US';
+  r.interimResults = false;
+  r.onstart = function() {
+    el.placeholder = 'Listening...';
+    el.style.borderColor = 'var(--red)';
+    if (btn) btn.classList.add('listening');
+  };
+  r.onresult = function(e) {
+    var result = e.results[0][0].transcript;
+    // Capitalize first letter of each word for names/breeds
+    el.value = result.replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+    el.placeholder = '';
+    el.style.borderColor = 'var(--green)';
+    if (btn) btn.classList.remove('listening');
+    setTimeout(function() { el.style.borderColor = ''; }, 1200);
+  };
+  r.onerror = function() {
+    el.placeholder = 'Try again';
+    el.style.borderColor = '';
+    if (btn) btn.classList.remove('listening');
+    setTimeout(function() { el.placeholder = 'Tap mic and say...'; }, 1500);
+  };
+  r.onend = function() {
+    if (btn) btn.classList.remove('listening');
   };
   r.start();
 }
@@ -1651,14 +1770,28 @@ async function createProfile() {
       return;
     }
 
-    var res = await fetch(
-      SUPA_URL + '/rest/v1/pup_profiles',
-      {
-        method: 'POST',
-        headers: Object.assign({}, getHeaders(), { 'Prefer': 'return=representation' }),
-        body: JSON.stringify(payload)
-      }
-    );
+    var res;
+    if (isEditMode && myId && !myId.startsWith('local_')) {
+      // PATCH existing profile
+      res = await fetch(
+        SUPA_URL + '/rest/v1/pup_profiles?id=eq.' + myId,
+        {
+          method: 'PATCH',
+          headers: Object.assign({}, getHeaders(), { 'Prefer': 'return=representation' }),
+          body: JSON.stringify(payload)
+        }
+      );
+    } else {
+      // POST new profile
+      res = await fetch(
+        SUPA_URL + '/rest/v1/pup_profiles',
+        {
+          method: 'POST',
+          headers: Object.assign({}, getHeaders(), { 'Prefer': 'return=representation' }),
+          body: JSON.stringify(payload)
+        }
+      );
+    }
     if (!res.ok) throw new Error(await res.text());
     var data = await res.json();
 
@@ -1669,15 +1802,24 @@ async function createProfile() {
       localStorage.setItem('pm_myProf', JSON.stringify(myProfile));
     }
 
-    document.getElementById('createForm').style.display = 'none';
-    document.getElementById('createSuccess').style.display = 'block';
+    if (isEditMode) {
+      // Return to My Pup tab after edit
+      isEditMode = false;
+      var titleEl = document.getElementById('formTitle');
+      if (titleEl) titleEl.textContent = 'Create Profile';
+      btn.textContent = "Create My Pup's Profile";
+      toast('Profile updated!');
+      switchTab('Me');
+    } else {
+      document.getElementById('createForm').style.display = 'none';
+      document.getElementById('createSuccess').style.display = 'block';
+    }
 
   } catch(err) {
-    
     toast('Could not save profile. Please try again.');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Create My Pup\'s Profile';
+    if (!isEditMode) btn.textContent = "Create My Pup's Profile";
   }
 }
 
@@ -1754,8 +1896,9 @@ function renderPups() {
         '<div class="pc-row1">' +
           '<div class="pc-name">' + esc(pup.name) + '</div>' +
           '<button class="pc-req-btn' + (matched ? ' sent' : '') + '" ' +
-            'onclick="event.stopPropagation();' + (matched ? '' : 'requestPlaydate(\'' + pup.id + '\')') + '"' +
-            ' aria-label="' + (matched ? 'Playdate already requested' : 'Request playdate with ' + esc(pup.name)) + '">' +
+            'data-pupid="' + pup.id + '" ' +
+            'onclick="event.stopPropagation();cardRequest(this)" ' +
+            'aria-label="' + (matched ? 'Playdate already requested' : 'Request playdate with ' + esc(pup.name)) + '">' +
             (matched ? 'Requested' : 'Request') +
           '</button>' +
         '</div>' +
@@ -1769,6 +1912,13 @@ function renderPups() {
     card.onclick = function() { openModal(pup); };
     c.appendChild(card);
   });
+}
+
+function cardRequest(btn) {
+  if (!btn) return;
+  var pupId = btn.getAttribute('data-pupid');
+  if (!pupId || btn.classList.contains('sent')) return;
+  requestPlaydate(pupId);
 }
 
 function setFilter(f, btn) {
@@ -1839,9 +1989,12 @@ async function requestPlaydate(pupId) {
   updateMatchDot();
   renderPups();
 
-  // Write real DB row if configured
+  var isMutualMatch = false;
+
+  // Write real DB row and check for mutual match
   if (isConfigured() && myId) {
     try {
+      // Insert this request
       await fetch(
         SUPA_URL + '/rest/v1/playdate_requests',
         {
@@ -1854,12 +2007,36 @@ async function requestPlaydate(pupId) {
           })
         }
       );
-    } catch(err) {
-      
-    }
+      // Check if the other pup already requested us (mutual match)
+      var checkRes = await fetch(
+        SUPA_URL + '/rest/v1/playdate_requests?from_pup_id=eq.' + pupId + '&to_pup_id=eq.' + myId + '&select=id,status',
+        { headers: getHeaders() }
+      );
+      if (checkRes.ok) {
+        var existing = await checkRes.json();
+        if (existing && existing.length > 0) {
+          isMutualMatch = true;
+          // Update both rows to accepted
+          await fetch(
+            SUPA_URL + '/rest/v1/playdate_requests?from_pup_id=eq.' + pupId + '&to_pup_id=eq.' + myId,
+            { method: 'PATCH', headers: Object.assign({}, getHeaders(), {'Prefer':'return=minimal'}), body: JSON.stringify({ status: 'accepted' }) }
+          );
+          await fetch(
+            SUPA_URL + '/rest/v1/playdate_requests?from_pup_id=eq.' + myId + '&to_pup_id=eq.' + pupId,
+            { method: 'PATCH', headers: Object.assign({}, getHeaders(), {'Prefer':'return=minimal'}), body: JSON.stringify({ status: 'accepted' }) }
+          );
+        }
+      }
+    } catch(err) {}
   }
 
-  showMatchCelebration(myProfile, pup);
+  if (isMutualMatch) {
+    // Both sides requested - show full match celebration
+    showMatchCelebration(myProfile, pup);
+  } else {
+    // One-sided so far - show a softer confirmation toast
+    toast('Playdate request sent to ' + (pup.name || 'New Friend') + '! We will notify you when they request back.');
+  }
 }
 
 // --- MATCH CELEBRATION ---
@@ -1972,36 +2149,84 @@ function closeConfirm() {
 }
 
 // --- MATCHES ---
-function loadMatches() {
+async function loadMatches() {
   var c = document.getElementById('matchesContainer');
   if (!myMatches.length) {
     c.innerHTML =
       '<div class="empty-state">' +
         '<div class="empty-emoji">&#9825;</div>' +
-        '<div class="empty-title">No matches yet</div>' +
-        '<div class="empty-sub">Browse pups and request a playdate. Your connections will appear here.</div>' +
+        '<div class="empty-title">No requests yet</div>' +
+        '<div class="empty-sub">Browse pups and send a playdate request. Your connections will appear here.</div>' +
       '</div>';
+    // Still load community match board
+    await loadMatchBoard(c);
     return;
   }
 
   c.innerHTML =
     '<div class="safety-note"><strong>Safety First</strong>Always meet at a public East Side dog park. Complete the Safety Checklist before your first meetup.</div>' +
     '<button onclick="openSafety()" style="width:100%;background:var(--teal);color:var(--bg);font-family:Outfit,sans-serif;font-weight:800;font-size:0.88rem;padding:13px;border-radius:var(--radius-sm);border:none;cursor:pointer;margin-bottom:14px;letter-spacing:0.04em;">Open Safety Checklist</button>' +
-    '<div style="font-family:Instrument Serif,serif;color:var(--text2);font-size:0.95rem;margin-bottom:11px;">Playdate Requests (' + myMatches.length + ')</div>';
+    '<div style="font-family:Instrument Serif,serif;color:var(--text2);font-size:0.95rem;margin-bottom:6px;">Your Requests (' + myMatches.length + ')</div>' +
+    '<div style="font-size:0.74rem;color:var(--text3);margin-bottom:12px;">A match is confirmed when both owners request each other.</div>';
 
   myMatches.forEach(function(id, i) {
     var pup = allPups.find(function(p) { return p.id === id; });
-    var name = pup ? esc(pup.name) : 'Pup #' + (i + 1);
+    var name = pup ? esc(pup.name) : 'Pup ' + (i + 1);
+    var photo = pup && pup.photo_url
+      ? '<img src="' + esc(pup.photo_url) + '" style="width:42px;height:42px;border-radius:50%;object-fit:cover;margin-right:10px;border:2px solid var(--border2)" alt="' + esc(name) + '"/>'
+      : '<div style="width:42px;height:42px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-right:10px;flex-shrink:0;">&#128054;</div>';
     var div = document.createElement('div');
     div.className = 'match-request-card';
     div.innerHTML =
-      '<div class="mrc-title">Request to ' + name + '</div>' +
-      '<div class="mrc-status">Pending - waiting for the other owner to respond</div>' +
+      '<div style="display:flex;align-items:center;margin-bottom:8px;">' + photo +
+        '<div><div class="mrc-title">' + name + '</div>' +
+        '<div class="mrc-status">Request sent - waiting for them to request back</div></div>' +
+      '</div>' +
       '<div class="mrc-actions">' +
         '<button class="mrc-btn safety" onclick="openSafety()">Safety Checklist</button>' +
       '</div>';
     c.appendChild(div);
   });
+
+  // Community match board below
+  await loadMatchBoard(c);
+}
+
+async function loadMatchBoard(container) {
+  // Load confirmed matches from DB (where both sides have requested)
+  if (!isConfigured()) return;
+  try {
+    var res = await fetch(
+      SUPA_URL + '/rest/v1/playdate_requests?select=from_pup_id,to_pup_id,status,created_at&status=eq.accepted&order=created_at.desc&limit=10',
+      { headers: getHeaders() }
+    );
+    if (!res.ok) return;
+    var matches = await res.json();
+    if (!matches.length) {
+      var noMatch = document.createElement('div');
+      noMatch.style.cssText = 'text-align:center;padding:20px;color:var(--text3);font-size:0.8rem;font-weight:700;margin-top:14px;';
+      noMatch.textContent = 'No confirmed matches yet - be the first pair!';
+      container.appendChild(noMatch);
+      return;
+    }
+    var header = document.createElement('div');
+    header.style.cssText = 'font-family:Instrument Serif,serif;font-size:1.1rem;color:var(--text);margin:20px 0 10px;';
+    header.innerHTML = "&#127942; Today's Matched Pups";
+    container.appendChild(header);
+    matches.forEach(function(m) {
+      var fromPup = allPups.find(function(p) { return p.id === m.from_pup_id; });
+      var toPup   = allPups.find(function(p) { return p.id === m.to_pup_id; });
+      if (!fromPup || !toPup) return;
+      var card = document.createElement('div');
+      card.style.cssText = 'background:var(--surface);border:1px solid rgba(155,127,255,0.2);border-radius:var(--radius);padding:13px;margin-bottom:8px;display:flex;align-items:center;gap:10px;';
+      var pA = fromPup.photo_url ? '<img src="' + esc(fromPup.photo_url) + '" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--purple);" alt="' + esc(fromPup.name) + '"/>' : '<span style="font-size:1.6rem">&#128054;</span>';
+      var pB = toPup.photo_url   ? '<img src="' + esc(toPup.photo_url) + '" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--purple);" alt="' + esc(toPup.name) + '"/>'   : '<span style="font-size:1.6rem">&#128054;</span>';
+      card.innerHTML = pA +
+        '<div style="flex:1"><div style="font-family:Instrument Serif,serif;font-size:0.95rem;color:var(--purple)">' + esc(fromPup.name) + ' + ' + esc(toPup.name) + '</div>' +
+        '<div style="font-size:0.72rem;color:var(--text3)">Confirmed playdate match</div></div>' + pB;
+      container.appendChild(card);
+    });
+  } catch(e) {}
 }
 
 function updateMatchDot() {
@@ -2116,25 +2341,29 @@ async function loadWatch() {
 function loadMyProfile() {
   var c = document.getElementById('myPupContainer');
   if (!myProfile) {
-    c.innerHTML =
-      '<div class="empty-state">' +
-        '<div class="empty-emoji">🐾</div>' +
-        '<div class="empty-title">No profile yet</div>' +
-        '<div class="empty-sub">Create your pup\'s profile to get started!</div>' +
-      '</div>' +
-      '<button class="sbtn" onclick="switchTab(\'Create\')">Create Profile</button>';
+    c.innerHTML = '<div class="empty-state"><div class="empty-emoji">&#128062;</div><div class="empty-title">No profile yet</div><div class="empty-sub">Create your pup profile to get started!</div></div><button class="sbtn" id="goCreateBtn">Create Profile</button>';
+    document.getElementById('goCreateBtn') && document.getElementById('goCreateBtn').addEventListener('click', function(){ switchTab('Create'); });
     return;
   }
 
   var p = myProfile;
+  var myTags = (p.personality || '').split(',').filter(Boolean)
+    .map(function(t) { return '<span class="ptag">' + esc(t.trim()) + '</span>'; }).join('');
+  var myEnergy = p.energy ? '<span class="ptag e">' + esc(p.energy) + '</span>' : '';
+  var myParks = (p.parks || '').split(',').filter(Boolean)
+    .map(function(pk) { return '<span class="ptag p">' + esc(pk.trim()) + '</span>'; }).join('');
+
   c.innerHTML =
     '<div class="my-profile-card">' +
       '<div class="my-profile-photo">' +
-        (p.photo_url ? '<img src="' + esc(p.photo_url) + '" alt="' + esc(p.name) + '"/>' : '🐶') +
+        (p.photo_url ? '<img src="' + esc(p.photo_url) + '" alt="' + esc(p.name) + '"/>' : '<span style="font-size:5rem">&#128054;</span>') +
       '</div>' +
       '<div class="my-profile-body">' +
         '<div class="my-profile-name">' + esc(p.name) + '</div>' +
-        '<div class="my-profile-breed">' + esc(p.breed) + ' &middot; ' + esc(p.age) + ' &middot; ' + esc(p.size) + '</div>' +
+        '<div class="my-profile-breed">' + esc(p.breed) + ' &middot; ' + esc(p.age) + ' &middot; ' + esc(p.size) + (p.sex ? ' &middot; ' + esc(p.sex) : '') + '</div>' +
+        (myTags || myEnergy ? '<div class="pc-tags" style="margin-bottom:8px">' + myTags + myEnergy + '</div>' : '') +
+        (myParks ? '<div class="pc-tags" style="margin-bottom:10px">' + myParks + '</div>' : '') +
+        (p.bio ? '<div style="font-size:0.81rem;color:var(--text2);line-height:1.6;background:var(--bg2);padding:10px 12px;border-radius:var(--radius-sm);margin-bottom:10px;">' + esc(p.bio) + '</div>' : '') +
         '<div class="my-action-row">' +
           '<button class="my-btn edit" onclick="editProfile()">Edit Profile</button>' +
           '<button class="my-btn delete" onclick="deleteProfile()">Remove Pup</button>' +
@@ -2144,22 +2373,54 @@ function loadMyProfile() {
     '<div class="info-note">' +
       '<strong>Your Privacy</strong>' +
       'Owner: ' + esc(p.owner_name) + ' &middot; Location: ' + esc(p.neighborhood) + '<br>' +
-      'Playdate requests sent: ' + myMatches.length +
+      'Requests sent: ' + myMatches.length +
     '</div>';
 }
 
 function editProfile() {
   if (!myProfile) return;
   var p = myProfile;
+  // Pre-fill all text fields
   document.getElementById('inp_name').value = p.name || '';
   document.getElementById('inp_breed').value = p.breed || '';
   document.getElementById('inp_bio').value = p.bio || '';
   document.getElementById('inp_owner').value = p.owner_name || '';
   document.getElementById('inp_zip').value = p.neighborhood || '';
+  // Pre-fill dropdowns
+  if (p.age) document.getElementById('inp_age').value = p.age;
+  if (p.size) document.getElementById('inp_size').value = p.size;
+  if (p.sex) document.getElementById('inp_sex').value = p.sex;
+  // Pre-select personality tags
+  if (p.personality) {
+    var traits = p.personality.split(',').map(function(t) { return t.trim().toLowerCase(); });
+    document.querySelectorAll('#traitGroup .topt').forEach(function(el) {
+      el.classList.toggle('sel', traits.includes(el.textContent.trim().toLowerCase()));
+    });
+  }
+  // Pre-select energy
+  if (p.energy) {
+    document.querySelectorAll('#energyGroup .topt').forEach(function(el) {
+      el.classList.toggle('sel', el.textContent.trim().toLowerCase().indexOf(p.energy.toLowerCase().split(' ')[0]) !== -1);
+    });
+  }
+  // Show photo preview if exists
+  if (p.photo_url) {
+    var img = document.getElementById('pupPhotoPreview');
+    img.src = p.photo_url;
+    img.style.display = 'block';
+    document.getElementById('photoHint').style.display = 'none';
+  }
+  // Change form title and button to EDIT mode
+  var titleEl = document.getElementById('formTitle');
+  if (titleEl) titleEl.textContent = 'Edit Profile';
+  var btn = document.getElementById('createBtn');
+  if (btn) btn.textContent = 'Save Changes';
+  isEditMode = true;
   document.getElementById('createForm').style.display = 'block';
   document.getElementById('createSuccess').style.display = 'none';
   switchTab('Create');
-  toast('Edit your details and save again.');
+  window.scrollTo(0, 0);
+  toast('Update your details and tap Save Changes.');
 }
 
 async function deleteProfile() {
@@ -2230,8 +2491,23 @@ document.getElementById('photoZone').addEventListener('keydown', function(e) {
   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handlePhotoClick(); }
 });
 
+// --- THEME ---
+function toggleTheme() {
+  var isLight = document.body.classList.toggle('light');
+  var btn = document.getElementById('themeToggle');
+  if (btn) btn.innerHTML = isLight ? '&#127769;' : '&#9728;&#65039;';
+  localStorage.setItem('pm_theme', isLight ? 'light' : 'dark');
+}
+
 // --- INIT ---
 (function init() {
+  // Restore saved theme
+  var savedTheme = localStorage.getItem('pm_theme');
+  if (savedTheme === 'light') {
+    document.body.classList.add('light');
+    var btn = document.getElementById('themeToggle');
+    if (btn) btn.innerHTML = '&#127769;';
+  }
   updateMatchDot();
   loadWatch();
 })();
