@@ -1869,7 +1869,7 @@ body.light::after { opacity: 0.015; }
     </div>
     <div class="frow">
       <label class="flabel" for="contact_email">Your Email *</label>
-      <input class="finput" type="email" id="contact_email" placeholder="lamarmyers49@email.com" maxlength="120" autocomplete="email"/>
+      <input class="finput" type="email" id="contact_email" placeholder="your@email.com" maxlength="120" autocomplete="email"/>
     </div>
     <div class="frow">
       <label class="flabel" for="contact_type">Message Type</label>
@@ -3153,8 +3153,8 @@ async function loadAdminStats() {
 // ============================================================
 // IMPORTANT: Replace RESEND_API_KEY below with your key from resend.com
 // Free tier: 100 emails/day. Sign up at resend.com → API Keys → Create Key
-var RESEND_API_KEY = 're_Qj6paEDW_3UUrR18CrpapSwQ8PgDxUjNi';
-var DEVELOPER_EMAIL = 'lamarmyers49@email.com'; // Replace with your real Gmail
+var RESEND_API_KEY = 're_33nNkfPB_6c1HBnJJWsiAd2MUsp2b1eox';
+var DEVELOPER_EMAIL = 'director@metaearthinitiative.org'; // Replace with your real Gmail
 
 function openContact() {
   document.getElementById('contactBackdrop').classList.add('open');
@@ -3192,7 +3192,7 @@ async function sendContactMessage() {
   var body = 'From: ' + (name || 'Anonymous') + '\nEmail: ' + email + '\nType: ' + (typeLabels[type] || type) + '\n\n' + msg + '\n\n---\nSent via PawMatch app · pawmatch-seven.vercel.app';
 
   try {
-    if (RESEND_API_KEY === 're_Qj6paEDW_3UUrR18CrpapSwQ8PgDxUjNi') {
+    if (!RESEND_API_KEY || RESEND_API_KEY === 'YOUR_RESEND_API_KEY') {
       // Dev mode fallback — copy to clipboard instead
       var formatted = subject + '\n\n' + body;
       if (navigator.clipboard) {
