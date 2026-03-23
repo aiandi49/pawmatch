@@ -1001,7 +1001,7 @@ body.light .modal-sheet,
 body.light .safety-sheet {
   background: var(--surface);
 }
-body.light body::after { opacity: 0.15; }
+body.light::after { opacity: 0.015; }
 
 </style>
 </head>
@@ -1994,12 +1994,12 @@ async function requestPlaydate(pupId) {
   // Write real DB row and check for mutual match
   if (isConfigured() && myId) {
     try {
-      // Insert this request
-      await fetch(
+      // Insert this request - wait for full confirmation before checking mutual
+      var insertRes = await fetch(
         SUPA_URL + '/rest/v1/playdate_requests',
         {
           method: 'POST',
-          headers: Object.assign({}, getHeaders(), { 'Prefer': 'return=minimal' }),
+          headers: Object.assign({}, getHeaders(), { 'Prefer': 'return=representation' }),
           body: JSON.stringify({
             from_pup_id: myId,
             to_pup_id: pupId,
@@ -2007,24 +2007,32 @@ async function requestPlaydate(pupId) {
           })
         }
       );
-      // Check if the other pup already requested us (mutual match)
-      var checkRes = await fetch(
-        SUPA_URL + '/rest/v1/playdate_requests?from_pup_id=eq.' + pupId + '&to_pup_id=eq.' + myId + '&select=id,status',
-        { headers: getHeaders() }
-      );
-      if (checkRes.ok) {
-        var existing = await checkRes.json();
-        if (existing && existing.length > 0) {
-          isMutualMatch = true;
-          // Update both rows to accepted
-          await fetch(
-            SUPA_URL + '/rest/v1/playdate_requests?from_pup_id=eq.' + pupId + '&to_pup_id=eq.' + myId,
-            { method: 'PATCH', headers: Object.assign({}, getHeaders(), {'Prefer':'return=minimal'}), body: JSON.stringify({ status: 'accepted' }) }
-          );
-          await fetch(
-            SUPA_URL + '/rest/v1/playdate_requests?from_pup_id=eq.' + myId + '&to_pup_id=eq.' + pupId,
-            { method: 'PATCH', headers: Object.assign({}, getHeaders(), {'Prefer':'return=minimal'}), body: JSON.stringify({ status: 'accepted' }) }
-          );
+      // Only proceed with mutual check if insert succeeded
+      if (insertRes.ok) {
+        // Small buffer to ensure DB write is fully committed before reading
+        await new Promise(function(resolve) { setTimeout(resolve, 350); });
+
+        // Check if the other pup already requested us (mutual match)
+        var checkRes = await fetch(
+          SUPA_URL + '/rest/v1/playdate_requests?from_pup_id=eq.' + pupId + '&to_pup_id=eq.' + myId + '&select=id,status',
+          { headers: getHeaders() }
+        );
+        if (checkRes.ok) {
+          var existing = await checkRes.json();
+          if (existing && existing.length > 0) {
+            isMutualMatch = true;
+            // Update both rows to accepted in parallel for speed
+            await Promise.all([
+              fetch(
+                SUPA_URL + '/rest/v1/playdate_requests?from_pup_id=eq.' + pupId + '&to_pup_id=eq.' + myId,
+                { method: 'PATCH', headers: Object.assign({}, getHeaders(), {'Prefer':'return=minimal'}), body: JSON.stringify({ status: 'accepted' }) }
+              ),
+              fetch(
+                SUPA_URL + '/rest/v1/playdate_requests?from_pup_id=eq.' + myId + '&to_pup_id=eq.' + pupId,
+                { method: 'PATCH', headers: Object.assign({}, getHeaders(), {'Prefer':'return=minimal'}), body: JSON.stringify({ status: 'accepted' }) }
+              )
+            ]);
+          }
         }
       }
     } catch(err) {}
@@ -2302,6 +2310,12 @@ async function loadWatch() {
     c.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:0.82rem">Connect Supabase to see community safety reports.</div>';
     return;
   }
+
+  // Show skeleton so the tab never looks blank while fetching
+  c.innerHTML =
+    '<div class="skeleton" style="height:58px;border-radius:var(--radius-sm);margin-bottom:7px"></div>' +
+    '<div class="skeleton" style="height:58px;border-radius:var(--radius-sm);margin-bottom:7px"></div>' +
+    '<div class="skeleton" style="height:58px;border-radius:var(--radius-sm)"></div>';
 
   try {
     var res = await fetch(
