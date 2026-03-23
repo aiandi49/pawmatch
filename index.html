@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0A0A10">
 <meta name="description" content="PawMatch - Tucson's premier dog playdate matching app. East Side Tucson, 85710.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PawMatch">
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22PawMatch%20Tucson%22%2C%22short_name%22%3A%22PawMatch%22%2C%22description%22%3A%22Tucson%20East%20Side%20dog%20playdate%20matching%20app%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230A0A10%22%2C%22theme_color%22%3A%22%230A0A10%22%2C%22orientation%22%3A%22portrait%22%7D">
 <title>PawMatch - Tucson Dog Playdate Matching</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -1003,13 +1008,224 @@ body.light .safety-sheet {
 }
 body.light::after { opacity: 0.015; }
 
+/* ── ADMIN PIN OVERLAY ── */
+.admin-pin-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.88);
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.admin-pin-overlay.open { display: flex; animation: fadeScaleIn 0.22s ease both; }
+.admin-pin-box {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 32px 28px;
+  width: 100%; max-width: 320px;
+  text-align: center;
+}
+.admin-pin-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.35rem; color: var(--text);
+  margin-bottom: 6px;
+}
+.admin-pin-sub { font-size: 0.8rem; color: var(--text2); margin-bottom: 22px; }
+.admin-pin-dots {
+  display: flex; justify-content: center; gap: 10px;
+  margin-bottom: 22px;
+}
+.admin-pin-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  background: var(--bg2);
+  transition: all 0.15s;
+}
+.admin-pin-dot.filled { background: var(--red); border-color: var(--red); }
+.admin-pin-keypad {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 8px; margin-bottom: 14px;
+}
+.admin-pin-key {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 16px 10px;
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--text); cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: background 0.14s, transform 0.1s;
+}
+.admin-pin-key:hover { background: var(--surface3); }
+.admin-pin-key:active { transform: scale(0.95); background: var(--surface3); }
+.admin-pin-key.del { font-size: 0.85rem; color: var(--text2); }
+.admin-pin-err {
+  font-size: 0.76rem; color: var(--red);
+  font-weight: 700; min-height: 18px;
+  margin-bottom: 8px;
+}
+.admin-pin-cancel {
+  font-size: 0.78rem; color: var(--text3);
+  cursor: pointer; background: none; border: none;
+  font-family: 'Outfit', sans-serif;
+  padding: 6px; width: 100%; text-align: center;
+}
+.admin-pin-cancel:hover { color: var(--text2); }
+
+/* ── ADMIN PANEL ── */
+.admin-panel-overlay {
+  position: fixed; inset: 0; z-index: 8000;
+  background: var(--bg);
+  display: none; flex-direction: column;
+  overflow-y: auto;
+}
+.admin-panel-overlay.open { display: flex; animation: fadeScaleIn 0.25s ease both; }
+.admin-panel-nav {
+  position: sticky; top: 0;
+  background: rgba(10,10,16,0.96);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 10;
+}
+.admin-panel-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.15rem; color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.admin-panel-badge {
+  font-size: 0.58rem; font-weight: 800;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 20px;
+  background: var(--red-dim); color: var(--red);
+  border: 1px solid rgba(255,92,108,0.25);
+}
+.admin-close-btn {
+  width: 32px; height: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 50%; color: var(--text2);
+  font-size: 0.9rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.admin-body { padding: 16px; max-width: 480px; margin: 0 auto; width: 100%; }
+.admin-section-head {
+  font-size: 0.64rem; font-weight: 800;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--text3); margin: 20px 0 10px;
+}
+.admin-task {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 13px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s, border-color 0.18s;
+  user-select: none;
+}
+.admin-task:hover { border-color: var(--border2); }
+.admin-task.done { opacity: 0.4; }
+.admin-task-check {
+  width: 20px; height: 20px; border-radius: 6px;
+  border: 1.5px solid var(--border2);
+  background: var(--bg2); flex-shrink: 0; margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; color: #fff; transition: all 0.18s;
+}
+.admin-task.done .admin-task-check { background: var(--green); border-color: var(--green); }
+.admin-task.done .admin-task-check::after { content: '✓'; font-weight: 800; }
+.admin-task-text {
+  font-size: 0.86rem; font-weight: 600; color: var(--text);
+  transition: color 0.18s;
+}
+.admin-task.done .admin-task-text { text-decoration: line-through; color: var(--text3); }
+.admin-task-sub { font-size: 0.74rem; color: var(--text2); margin-top: 2px; line-height: 1.5; }
+.admin-task.done .admin-task-sub { color: var(--text3); }
+.admin-progress-bar {
+  height: 3px; background: var(--surface2);
+  border-radius: 2px; margin-bottom: 20px; overflow: hidden;
+}
+.admin-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red), var(--amber));
+  border-radius: 2px;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.admin-stat-row {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+  margin-bottom: 16px;
+}
+.admin-stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 10px; text-align: center;
+}
+.admin-stat-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.3rem; font-weight: 500; color: var(--red);
+  margin-bottom: 3px;
+}
+.admin-stat-lbl { font-size: 0.65rem; color: var(--text3); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+
+/* ── CONTACT / MESSAGE DEV ── */
+.contact-backdrop {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.78);
+  display: none; align-items: flex-end; justify-content: center;
+}
+.contact-backdrop.open { display: flex; }
+.contact-sheet {
+  background: var(--surface2);
+  border-radius: 22px 22px 0 0;
+  padding: 22px 18px 44px;
+  width: 100%; max-width: 480px;
+  animation: sheetUp 0.28s cubic-bezier(0.4,0,0.2,1) both;
+  max-height: 90vh; overflow-y: auto;
+}
+.contact-tag { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--purple); margin-bottom: 7px; }
+.contact-title { font-family: 'Instrument Serif', serif; font-size: 1.35rem; color: var(--text); margin-bottom: 4px; }
+.contact-sub { font-size: 0.81rem; color: var(--text2); line-height: 1.6; margin-bottom: 18px; }
+
+/* ── REPORT BUTTON ── */
+.report-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: transparent;
+  border: 1px solid rgba(255,92,108,0.18);
+  border-radius: var(--radius-xs);
+  color: var(--text3); font-size: 0.65rem; font-weight: 700;
+  padding: 4px 9px; cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.18s; margin-top: 10px;
+}
+.report-btn:hover { color: var(--red); border-color: rgba(255,92,108,0.4); background: var(--red-dim); }
+
+/* ── CONTACT FLOATING BUTTON ── */
+.contact-fab {
+  position: fixed;
+  bottom: calc(var(--tab-h) + 14px);
+  right: 16px;
+  width: 42px; height: 42px;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.05rem;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  transition: transform 0.18s, background 0.18s;
+}
+.contact-fab:hover { transform: scale(1.08); background: var(--surface3); }
+
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a class="logo" href="#">
+  <a class="logo" href="#" id="logoTap" onclick="handleLogoTap(event)" aria-label="PawMatch home">
     <div class="logo-paw"></div>
     PawMatch
   </a>
@@ -1021,6 +1237,9 @@ body.light::after { opacity: 0.015; }
     </button>
   </div>
 </nav>
+
+<!-- CONTACT FAB -->
+<button class="contact-fab" onclick="openContact()" aria-label="Message the developer" title="Message the developer">&#9993;</button>
 
 <div class="page">
 
@@ -1355,6 +1574,7 @@ body.light::after { opacity: 0.015; }
         Contact info is only shared after both owners agree. Always meet at a public park first.
       </div>
       <button class="sheet-main-btn" id="modalMatchBtn" onclick="sendRequest()">Request a Playdate</button>
+      <button class="report-btn" id="modalReportBtn" onclick="reportPup()">&#9888; Report this profile</button>
     </div>
   </div>
 </div>
@@ -1466,6 +1686,216 @@ body.light::after { opacity: 0.015; }
 
 <!-- TOAST -->
 <div class="toast" id="toastMsg" role="alert" aria-live="polite"></div>
+
+<!-- ===================== ADMIN PIN OVERLAY ===================== -->
+<div class="admin-pin-overlay" id="adminPinOverlay" role="dialog" aria-modal="true" aria-label="Admin PIN">
+  <div class="admin-pin-box">
+    <div class="admin-pin-title">&#128274; Admin Access</div>
+    <div class="admin-pin-sub">Enter your 6-digit PIN</div>
+    <div class="admin-pin-dots" id="adminPinDots">
+      <div class="admin-pin-dot" id="pd0"></div>
+      <div class="admin-pin-dot" id="pd1"></div>
+      <div class="admin-pin-dot" id="pd2"></div>
+      <div class="admin-pin-dot" id="pd3"></div>
+      <div class="admin-pin-dot" id="pd4"></div>
+      <div class="admin-pin-dot" id="pd5"></div>
+    </div>
+    <div class="admin-pin-err" id="adminPinErr"></div>
+    <div class="admin-pin-keypad">
+      <button class="admin-pin-key" onclick="adminPinPress('1')">1</button>
+      <button class="admin-pin-key" onclick="adminPinPress('2')">2</button>
+      <button class="admin-pin-key" onclick="adminPinPress('3')">3</button>
+      <button class="admin-pin-key" onclick="adminPinPress('4')">4</button>
+      <button class="admin-pin-key" onclick="adminPinPress('5')">5</button>
+      <button class="admin-pin-key" onclick="adminPinPress('6')">6</button>
+      <button class="admin-pin-key" onclick="adminPinPress('7')">7</button>
+      <button class="admin-pin-key" onclick="adminPinPress('8')">8</button>
+      <button class="admin-pin-key" onclick="adminPinPress('9')">9</button>
+      <button class="admin-pin-key" onclick="adminPinPress('')" style="opacity:0.3" disabled></button>
+      <button class="admin-pin-key" onclick="adminPinPress('0')">0</button>
+      <button class="admin-pin-key del" onclick="adminPinDel()">&#9003;</button>
+    </div>
+    <button class="admin-pin-cancel" onclick="closeAdminPin()">Cancel</button>
+  </div>
+</div>
+
+<!-- ===================== ADMIN PANEL ===================== -->
+<div class="admin-panel-overlay" id="adminPanelOverlay" role="dialog" aria-modal="true" aria-label="Admin Panel">
+  <div class="admin-panel-nav">
+    <div class="admin-panel-title">
+      &#128062; Command Center
+      <span class="admin-panel-badge">Admin</span>
+    </div>
+    <button class="admin-close-btn" onclick="closeAdminPanel()" aria-label="Close admin panel">&times;</button>
+  </div>
+  <div class="admin-body">
+
+    <!-- Live stats -->
+    <div class="admin-section-head">Live Stats</div>
+    <div class="admin-stat-row">
+      <div class="admin-stat">
+        <div class="admin-stat-num" id="adminStatProfiles">—</div>
+        <div class="admin-stat-lbl">Pup Profiles</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-num" id="adminStatRequests">—</div>
+        <div class="admin-stat-lbl">Requests</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-num" id="adminStatMatches">—</div>
+        <div class="admin-stat-lbl">Matches</div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div class="admin-section-head">Launch Progress</div>
+    <div class="admin-progress-bar">
+      <div class="admin-progress-fill" id="adminProgressFill" style="width:0%"></div>
+    </div>
+
+    <!-- TODAY -->
+    <div class="admin-section-head">Today — Launch</div>
+    <div class="admin-task" onclick="adminToggle(this,'atask0')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Upload fixed index.html to GitHub</div><div class="admin-task-sub">Commit → Vercel auto-deploys in ~30s</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask1')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Verify live site after deploy</div><div class="admin-task-sub">Test profile create, photo upload, voice input, Watch tab skeleton</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask2')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Record 30-second screen recording</div><div class="admin-task-sub">Hero → voice input → browse → safety board</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask3')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Post on all 6 platforms</div><div class="admin-task-sub">"AI and I finally figured each other out."</div></div>
+    </div>
+
+    <!-- GROUND GAME -->
+    <div class="admin-section-head">Local Ground Game</div>
+    <div class="admin-task" onclick="adminToggle(this,'atask4')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Print QR code flyers (10–20 copies)</div><div class="admin-task-sub">pawmatch-seven.vercel.app QR code</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask5')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Drop flyers at Brandi Fenton dog park</div><div class="admin-task-sub">Bulletin board + hand to dog owners</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask6')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Drop flyers at Agua Caliente & Pantano</div><div class="admin-task-sub">One Saturday morning loop covers all 3</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask7')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Leave flyers at East Side vet offices</div><div class="admin-task-sub">Petco/PetSmart on Broadway, independent vets</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask8')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Send press pitch to KOLD, KVOA, KGUN</div><div class="admin-task-sub">Subject: "Tucson man builds dog app with AI in 48hrs"</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask9')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Post in Nextdoor East Side Tucson</div><div class="admin-task-sub">Neighbor-to-neighbor tone — no sales pitch</div></div>
+    </div>
+
+    <!-- WEEK 2 -->
+    <div class="admin-section-head">Week 2 Goals</div>
+    <div class="admin-task" onclick="adminToggle(this,'atask10')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Reply to every comment within 48hrs</div><div class="admin-task-sub">Algorithm + community signal</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask11')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Create PawMatch Facebook Group</div><div class="admin-task-sub">"PawMatch Tucson — Dog Playdate Community"</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask12')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">DM first 10 users for feedback</div><div class="admin-task-sub">One question: what would make this better?</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask13')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Post first confirmed match story</div><div class="admin-task-sub">Screenshot with owner permission — pure gold content</div></div>
+    </div>
+
+    <!-- 1 MONTH -->
+    <div class="admin-section-head">1 Month Milestones</div>
+    <div class="admin-task" onclick="adminToggle(this,'atask14')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Reach 100 pup profiles</div><div class="admin-task-sub">Screenshot browse tab at triple digits</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask15')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Organize first PawMatch Park Meetup</div><div class="admin-task-sub">Saturday at Brandi Fenton — 5 pups = success</div></div>
+    </div>
+    <div class="admin-task" onclick="adminToggle(this,'atask16')">
+      <div class="admin-task-check"></div>
+      <div><div class="admin-task-text">Submit to Product Hunt</div><div class="admin-task-sub">National dev/tech audience visibility</div></div>
+    </div>
+
+    <!-- ADMIN NOTES -->
+    <div class="admin-section-head">Private Notes</div>
+    <textarea id="adminNotes" placeholder="Your private notes, ideas, investor contacts..."
+      style="width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px;color:var(--text);font-family:'Outfit',sans-serif;font-size:0.85rem;line-height:1.6;resize:none;min-height:120px;outline:none;margin-bottom:6px;"
+      oninput="saveAdminNotes()"></textarea>
+    <div style="font-size:0.7rem;color:var(--text3);margin-bottom:20px;">Notes save automatically to your device.</div>
+
+    <!-- CHANGE PIN -->
+    <div class="admin-section-head">Security</div>
+    <button onclick="changeAdminPin()"
+      style="width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px;color:var(--text2);font-family:'Outfit',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;margin-bottom:6px;transition:background 0.18s;"
+      onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='var(--surface)'">
+      &#128274; Change Admin PIN
+    </button>
+    <button onclick="closeAdminPanel()"
+      style="width:100%;background:transparent;border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text3);font-family:'Outfit',sans-serif;font-size:0.85rem;cursor:pointer;margin-bottom:30px;">
+      Close Admin Panel
+    </button>
+
+  </div>
+</div>
+
+<!-- ===================== CONTACT / MESSAGE DEV SHEET ===================== -->
+<div class="contact-backdrop" id="contactBackdrop" onclick="closeContactOutside(event)" role="dialog" aria-modal="true" aria-label="Message the developer">
+  <div class="contact-sheet">
+    <div style="width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 18px"></div>
+    <div class="contact-tag">PawMatch · VTREI LLC</div>
+    <div class="contact-title">Message the Developer</div>
+    <div class="contact-sub">Questions, partnership inquiries, investor interest, or just want to say hi — it goes straight to Lamar.</div>
+
+    <div class="frow">
+      <label class="flabel" for="contact_name">Your Name</label>
+      <input class="finput" type="text" id="contact_name" placeholder="First name or full name" maxlength="80" autocomplete="name"/>
+    </div>
+    <div class="frow">
+      <label class="flabel" for="contact_email">Your Email *</label>
+      <input class="finput" type="email" id="contact_email" placeholder="your@email.com" maxlength="120" autocomplete="email"/>
+    </div>
+    <div class="frow">
+      <label class="flabel" for="contact_type">Message Type</label>
+      <select class="fselect" id="contact_type">
+        <option value="general">General message</option>
+        <option value="feedback">App feedback</option>
+        <option value="partnership">Partnership / sponsorship</option>
+        <option value="investor">Investor inquiry</option>
+        <option value="press">Press / media</option>
+        <option value="bug">Bug report</option>
+      </select>
+    </div>
+    <div class="frow">
+      <label class="flabel" for="contact_msg">Message *</label>
+      <textarea class="ftextarea" id="contact_msg" placeholder="What's on your mind?" maxlength="1000" style="min-height:100px"></textarea>
+    </div>
+
+    <button class="sbtn" id="contactSendBtn" onclick="sendContactMessage()" style="margin-top:4px">Send Message</button>
+    <div id="contactResult" style="display:none;text-align:center;padding:14px;font-size:0.84rem;color:var(--green);font-weight:700;margin-top:8px;"></div>
+
+    <div class="info-note" style="margin-top:14px">
+      <strong>Direct Line</strong>
+      Messages go directly to Lamar Myers, builder of PawMatch. Response within 24–48 hours.
+    </div>
+  </div>
+</div>
 
 <!-- ===================== JAVASCRIPT ===================== -->
 <script>
@@ -1639,7 +2069,7 @@ function handlePhotoClick() {
 function handleFileSelected(input) {
   var file = input.files[0];
   if (!file) return;
-  if (file.size > 8 * 1024 * 1024) { toast('Photo must be under 8MB.'); return; }
+  if (!validateImageFile(file)) { input.value = ''; return; }
 
   var reader = new FileReader();
   reader.onload = function(e) {
@@ -2513,9 +2943,326 @@ function toggleTheme() {
   localStorage.setItem('pm_theme', isLight ? 'light' : 'dark');
 }
 
-// --- INIT ---
+// ============================================================
+// SECURITY — REPORT PUP
+// ============================================================
+async function reportPup() {
+  if (!curViewPup) return;
+  if (!confirm('Report "' + (curViewPup.name || 'this profile') + '" for review?\n\nOur team will review and take action within 24 hours.')) return;
+  if (isConfigured()) {
+    try {
+      await fetch(
+        SUPA_URL + '/rest/v1/pup_reports',
+        {
+          method: 'POST',
+          headers: Object.assign({}, getHeaders(), { 'Prefer': 'return=minimal' }),
+          body: JSON.stringify({
+            reported_pup_id: curViewPup.id,
+            reported_by_device: getDeviceToken(),
+            reason: 'User report via app',
+            created_at: new Date().toISOString()
+          })
+        }
+      );
+    } catch(e) {}
+  }
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+  toast('Report submitted. We will review within 24 hours. Thank you for keeping PawMatch safe.');
+}
+
+// Image content-type guard — called in handleFileSelected
+function validateImageFile(file) {
+  var allowed = ['image/jpeg','image/jpg','image/png','image/webp','image/gif','image/heic','image/heif'];
+  if (!allowed.includes(file.type.toLowerCase())) {
+    toast('Please upload a photo file (JPEG, PNG, or WebP).');
+    return false;
+  }
+  if (file.size > 8 * 1024 * 1024) {
+    toast('Photo must be under 8MB.');
+    return false;
+  }
+  return true;
+}
+
+// ============================================================
+// ADMIN — LOGO TAP TRIGGER (tap logo 5x within 3 seconds)
+// ============================================================
+var adminTapCount = 0;
+var adminTapTimer = null;
+function handleLogoTap(e) {
+  e.preventDefault();
+  adminTapCount++;
+  clearTimeout(adminTapTimer);
+  adminTapTimer = setTimeout(function() { adminTapCount = 0; }, 3000);
+  if (adminTapCount >= 5) {
+    adminTapCount = 0;
+    clearTimeout(adminTapTimer);
+    openAdminPin();
+  }
+}
+
+// ── PIN ──
+var ADMIN_PIN_KEY = 'pm_admin_pin';
+var adminPinBuffer = '';
+var adminPinDefault = '000000';
+
+function getAdminPin() {
+  return localStorage.getItem(ADMIN_PIN_KEY) || adminPinDefault;
+}
+
+function openAdminPin() {
+  adminPinBuffer = '';
+  updatePinDots();
+  document.getElementById('adminPinErr').textContent = '';
+  document.getElementById('adminPinOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAdminPin() {
+  adminPinBuffer = '';
+  document.getElementById('adminPinOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function adminPinPress(digit) {
+  if (adminPinBuffer.length >= 6) return;
+  adminPinBuffer += digit;
+  updatePinDots();
+  if (adminPinBuffer.length === 6) {
+    setTimeout(checkAdminPin, 180);
+  }
+}
+function adminPinDel() {
+  adminPinBuffer = adminPinBuffer.slice(0, -1);
+  updatePinDots();
+  document.getElementById('adminPinErr').textContent = '';
+}
+function updatePinDots() {
+  for (var i = 0; i < 6; i++) {
+    var dot = document.getElementById('pd' + i);
+    if (dot) dot.classList.toggle('filled', i < adminPinBuffer.length);
+  }
+}
+function checkAdminPin() {
+  if (adminPinBuffer === getAdminPin()) {
+    closeAdminPin();
+    openAdminPanel();
+  } else {
+    document.getElementById('adminPinErr').textContent = 'Incorrect PIN. Try again.';
+    adminPinBuffer = '';
+    updatePinDots();
+    for (var i = 0; i < 6; i++) {
+      var dot = document.getElementById('pd' + i);
+      if (dot) { dot.style.background = 'var(--red)'; dot.style.borderColor = 'var(--red)'; }
+    }
+    setTimeout(function() {
+      for (var i = 0; i < 6; i++) {
+        var dot = document.getElementById('pd' + i);
+        if (dot) { dot.style.background = ''; dot.style.borderColor = ''; }
+      }
+    }, 600);
+  }
+}
+function changeAdminPin() {
+  var newPin = prompt('Enter a new 6-digit PIN (digits only):');
+  if (!newPin) return;
+  newPin = newPin.replace(/\D/g, '').slice(0, 6);
+  if (newPin.length !== 6) { toast('PIN must be exactly 6 digits.'); return; }
+  localStorage.setItem(ADMIN_PIN_KEY, newPin);
+  toast('PIN updated successfully.');
+}
+
+// ── ADMIN PANEL ──
+function openAdminPanel() {
+  loadAdminState();
+  loadAdminStats();
+  document.getElementById('adminPanelOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Restore notes
+  var notes = localStorage.getItem('pm_admin_notes') || '';
+  var ta = document.getElementById('adminNotes');
+  if (ta) ta.value = notes;
+}
+function closeAdminPanel() {
+  document.getElementById('adminPanelOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function saveAdminNotes() {
+  var ta = document.getElementById('adminNotes');
+  if (ta) localStorage.setItem('pm_admin_notes', ta.value);
+}
+
+var ADMIN_TASKS_KEY = 'pm_admin_tasks';
+var adminTaskCount = 17;
+
+function loadAdminState() {
+  var saved = JSON.parse(localStorage.getItem(ADMIN_TASKS_KEY) || '{}');
+  var done = 0;
+  for (var i = 0; i < adminTaskCount; i++) {
+    var el = document.querySelector('[onclick="adminToggle(this,\'atask' + i + '\')"]');
+    if (el) {
+      var isDone = !!saved['atask' + i];
+      el.classList.toggle('done', isDone);
+      if (isDone) done++;
+    }
+  }
+  updateAdminProgress(done);
+}
+
+function adminToggle(el, key) {
+  var wasDone = el.classList.contains('done');
+  el.classList.toggle('done');
+  var saved = JSON.parse(localStorage.getItem(ADMIN_TASKS_KEY) || '{}');
+  saved[key] = !wasDone;
+  localStorage.setItem(ADMIN_TASKS_KEY, JSON.stringify(saved));
+  var done = Object.values(saved).filter(Boolean).length;
+  updateAdminProgress(done);
+}
+
+function updateAdminProgress(done) {
+  var pct = Math.round((done / adminTaskCount) * 100);
+  var fill = document.getElementById('adminProgressFill');
+  if (fill) fill.style.width = pct + '%';
+}
+
+async function loadAdminStats() {
+  if (!isConfigured()) return;
+  try {
+    var r1 = await fetch(SUPA_URL + '/rest/v1/pup_profiles?select=id', { headers: getHeaders() });
+    if (r1.ok) {
+      var profiles = await r1.json();
+      var el = document.getElementById('adminStatProfiles');
+      if (el) el.textContent = profiles.length;
+    }
+    var r2 = await fetch(SUPA_URL + '/rest/v1/playdate_requests?select=id', { headers: getHeaders() });
+    if (r2.ok) {
+      var reqs = await r2.json();
+      var el2 = document.getElementById('adminStatRequests');
+      if (el2) el2.textContent = reqs.length;
+    }
+    var r3 = await fetch(SUPA_URL + '/rest/v1/playdate_requests?select=id&status=eq.accepted', { headers: getHeaders() });
+    if (r3.ok) {
+      var matches = await r3.json();
+      var el3 = document.getElementById('adminStatMatches');
+      if (el3) el3.textContent = matches.length;
+    }
+  } catch(e) {}
+}
+
+// ============================================================
+// CONTACT FORM — via Resend API
+// ============================================================
+// IMPORTANT: Replace RESEND_API_KEY below with your key from resend.com
+// Free tier: 100 emails/day. Sign up at resend.com → API Keys → Create Key
+var RESEND_API_KEY = 'YOUR_RESEND_API_KEY';
+var DEVELOPER_EMAIL = 'your@email.com'; // Replace with your real Gmail
+
+function openContact() {
+  document.getElementById('contactBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  document.getElementById('contactResult').style.display = 'none';
+}
+function closeContact() {
+  document.getElementById('contactBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeContactOutside(e) {
+  if (e.target === document.getElementById('contactBackdrop')) closeContact();
+}
+
+async function sendContactMessage() {
+  var name    = document.getElementById('contact_name').value.trim();
+  var email   = document.getElementById('contact_email').value.trim();
+  var type    = document.getElementById('contact_type').value;
+  var msg     = document.getElementById('contact_msg').value.trim();
+
+  if (!email || !msg) { toast('Please add your email and a message.'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast('Please enter a valid email address.'); return; }
+
+  var btn = document.getElementById('contactSendBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  var typeLabels = {
+    general: 'General message', feedback: 'App feedback',
+    partnership: 'Partnership / sponsorship', investor: 'Investor inquiry',
+    press: 'Press / media', bug: 'Bug report'
+  };
+
+  var subject = '[PawMatch] ' + (typeLabels[type] || type) + (name ? ' from ' + name : '');
+  var body = 'From: ' + (name || 'Anonymous') + '\nEmail: ' + email + '\nType: ' + (typeLabels[type] || type) + '\n\n' + msg + '\n\n---\nSent via PawMatch app · pawmatch-seven.vercel.app';
+
+  try {
+    if (RESEND_API_KEY === 'YOUR_RESEND_API_KEY') {
+      // Dev mode fallback — copy to clipboard instead
+      var formatted = subject + '\n\n' + body;
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(formatted);
+        toast('Dev mode: message copied to clipboard. Add your Resend API key to enable email.');
+      } else {
+        toast('Add your Resend API key to enable email delivery.');
+      }
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+      return;
+    }
+
+    var res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + RESEND_API_KEY
+      },
+      body: JSON.stringify({
+        from: 'PawMatch <onboarding@resend.dev>',
+        to: [DEVELOPER_EMAIL],
+        reply_to: email,
+        subject: subject,
+        text: body
+      })
+    });
+
+    if (res.ok) {
+      var resultEl = document.getElementById('contactResult');
+      resultEl.textContent = 'Message sent! Lamar will reply within 24–48 hours.';
+      resultEl.style.display = 'block';
+      document.getElementById('contact_name').value = '';
+      document.getElementById('contact_email').value = '';
+      document.getElementById('contact_msg').value = '';
+      document.getElementById('contact_type').value = 'general';
+      setTimeout(closeContact, 2800);
+    } else {
+      throw new Error('send_failed');
+    }
+  } catch(e) {
+    toast('Could not send message. Please try again or email directly.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Send Message';
+  }
+}
+
+// ============================================================
+// PWA INSTALL PROMPT
+// ============================================================
+var pwaInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  pwaInstallPrompt = e;
+  // Show subtle install hint after 30 seconds on first visit
+  if (!localStorage.getItem('pm_pwa_dismissed')) {
+    setTimeout(function() {
+      toast('Tip: Add PawMatch to your home screen for the best experience!');
+    }, 30000);
+  }
+});
+window.addEventListener('appinstalled', function() {
+  pwaInstallPrompt = null;
+  localStorage.setItem('pm_pwa_installed', '1');
+  toast('PawMatch added to your home screen!');
+});
+
+// ── INIT ──
 (function init() {
-  // Restore saved theme
   var savedTheme = localStorage.getItem('pm_theme');
   if (savedTheme === 'light') {
     document.body.classList.add('light');
@@ -2524,6 +3271,10 @@ function toggleTheme() {
   }
   updateMatchDot();
   loadWatch();
+  // Register service worker for PWA offline support
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('data:application/javascript,self.addEventListener("fetch",function(e){e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request)}))})').catch(function(){});
+  }
 })();
 
 </script>
@@ -2588,6 +3339,17 @@ CREATE POLICY "Anon insert requests"   ON playdate_requests FOR INSERT WITH CHEC
 -- safety_watchboard: anyone can read, insert
 CREATE POLICY "Public read watchboard" ON safety_watchboard FOR SELECT USING (true);
 CREATE POLICY "Anon insert watchboard" ON safety_watchboard FOR INSERT WITH CHECK (true);
+
+-- pup_reports table (for report/flag feature)
+CREATE TABLE pup_reports (
+  id                   uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  reported_pup_id      uuid REFERENCES pup_profiles(id) ON DELETE CASCADE,
+  reported_by_device   text,
+  reason               text,
+  created_at           timestamptz DEFAULT now()
+);
+ALTER TABLE pup_reports ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anon insert reports" ON pup_reports FOR INSERT WITH CHECK (true);
 
 -- Storage bucket (create in Dashboard > Storage > New Bucket)
 -- Bucket name: pup-photos
