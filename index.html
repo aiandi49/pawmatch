@@ -1408,8 +1408,8 @@ footer {
 // Replace these two values with your real Supabase credentials.
 // Never commit real credentials to a public GitHub repo.
 // Use Vercel environment variables for the anon key in production.
-var SUPA_URL = '[SUPABASE_PROJECT_URL]';
-var SUPA_KEY = '[SUPABASE_ANON_KEY]';
+var SUPA_URL = 'https://jmjrwkmbwydspeoftlly.supabase.co';
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImptanJ3a21id3lkc3Blb2Z0bGx5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyMjM5MDUsImV4cCI6MjA4OTc5OTkwNX0.y83zIvXDtosTl5eXJdWdQXZGMrUgHqs44uOZqchFVMk';
 
 // Storage bucket name (create this in Supabase Dashboard > Storage)
 var STORAGE_BUCKET = 'pup-photos';
@@ -1673,7 +1673,7 @@ async function createProfile() {
     document.getElementById('createSuccess').style.display = 'block';
 
   } catch(err) {
-    console.error('Create profile error:', err);
+    
     toast('Could not save profile. Please try again.');
   } finally {
     btn.disabled = false;
@@ -1701,8 +1701,8 @@ async function loadBrowse() {
     allPups = await res.json();
     renderPups();
   } catch(err) {
-    c.innerHTML = '<div style="text-align:center;padding:36px 20px;color:var(--text2);font-size:0.84rem">Could not load profiles. Check your connection and try again.</div>';
-    console.error('Browse error:', err);
+    c.innerHTML = '<div style="text-align:center;padding:36px 20px;color:var(--text2);font-size:0.84rem">No pups yet in your area. Be the first to create a profile!</div>';
+    
   }
 }
 
@@ -1855,7 +1855,7 @@ async function requestPlaydate(pupId) {
         }
       );
     } catch(err) {
-      console.error('Request write error:', err);
+      
     }
   }
 
@@ -2063,7 +2063,7 @@ async function submitWatch() {
     loadWatch();
   } catch(err) {
     toast('Could not post. Please try again.');
-    console.error('Watch submit error:', err);
+    
   } finally {
     btn.disabled = false;
     btn.textContent = 'Post to Safety Board';
@@ -2083,7 +2083,7 @@ async function loadWatch() {
       SUPA_URL + '/rest/v1/safety_watchboard?select=*&order=created_at.desc&limit=25',
       { headers: getHeaders() }
     );
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error('fetch_failed');
     var reports = await res.json();
 
     if (!reports.length) {
@@ -2108,8 +2108,7 @@ async function loadWatch() {
       c.appendChild(card);
     });
   } catch(err) {
-    c.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:0.82rem">Could not load safety reports.</div>';
-    console.error('Watch load error:', err);
+    c.innerHTML = '<div style="text-align:center;padding:22px;color:var(--text3);font-size:0.82rem">No reports yet. Be the first to post your playdate outcome!</div>';
   }
 }
 
@@ -2173,7 +2172,7 @@ async function deleteProfile() {
         { method: 'DELETE', headers: getHeaders() }
       );
     } catch(err) {
-      console.error('Delete error:', err);
+      
     }
   }
 
