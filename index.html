@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0A0A10">
+<meta name="description" content="PawMatch - Tucson's premier dog playdate matching app. East Side Tucson, 85710.">
+<title>PawMatch - Tucson Dog Playdate Matching</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   PAWMATCH - DARK THEME - TUCSON EAST SIDE
+   Built from scratch - Production Ready
+   Zero dummy data - all credentials are placeholder tokens
+   ========================================================= */
+
+:root {
+  --bg:        #0A0A10;
+  --bg2:       #0F0F18;
+  --bg3:       #141420;
+  --surface:   #191926;
+  --surface2:  #1E1E2E;
+  --surface3:  #232336;
+  --border:    rgba(255,255,255,0.06);
+  --border2:   rgba(255,255,255,0.11);
+  --border3:   rgba(255,255,255,0.18);
+  --text:      #EDEDF5;
+  --text2:     #8888A8;
+  --text3:     #44445A;
+  --red:       #FF5C6C;
+  --red2:      #FF8090;
+  --red-glow:  rgba(255,92,108,0.22);
+  --red-dim:   rgba(255,92,108,0.10);
+  --red-mid:   rgba(255,92,108,0.18);
+  --teal:      #00CDB4;
+  --teal-dim:  rgba(0,205,180,0.10);
+  --green:     #2DCB7A;
+  --green-dim: rgba(45,203,122,0.10);
+  --amber:     #F5C040;
+  --amber-dim: rgba(245,192,64,0.10);
+  --purple:    #9B7FFF;
+  --purple-dim:rgba(155,127,255,0.10);
+  --nav-h:     58px;
+  --tab-h:     66px;
+  --radius:    14px;
+  --radius-sm: 9px;
+  --radius-xs: 6px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* subtle noise texture */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAVIGATION ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: rgba(10,10,16,0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.3rem;
+  color: var(--text);
+  text-decoration: none;
+}
+.logo-paw {
+  width: 10px; height: 10px;
+  background: var(--red);
+  border-radius: 50%;
+  box-shadow: 0 0 14px var(--red);
+  flex-shrink: 0;
+}
+.nav-right { display: flex; align-items: center; gap: 8px; }
+.location-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text2);
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.location-badge span { color: var(--red); }
+
+/* ── PAGE SHELL ── */
+.page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--nav-h) 0 calc(var(--tab-h) + 16px);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 32px 20px 56px;
+  text-align: center;
+}
+.hero-glow-1 {
+  position: absolute;
+  top: -40px; left: 50%;
+  transform: translateX(-50%);
+  width: 340px; height: 200px;
+  background: radial-gradient(ellipse, rgba(255,92,108,0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-glow-2 {
+  position: absolute;
+  bottom: 0; right: -60px;
+  width: 260px; height: 180px;
+  background: radial-gradient(ellipse, rgba(0,205,180,0.09) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 56px;
+  background: var(--bg);
+  clip-path: ellipse(58% 100% at 50% 100%);
+}
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 16px;
+}
+.hero-eyebrow::before,
+.hero-eyebrow::after {
+  content: '';
+  width: 22px; height: 1px;
+  background: currentColor;
+  opacity: 0.5;
+}
+.hero-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(2.1rem, 7.5vw, 3rem);
+  line-height: 1.06;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--red);
+}
+.hero-sub {
+  font-size: 0.88rem;
+  color: var(--text2);
+  max-width: 272px;
+  margin: 0 auto 22px;
+  line-height: 1.65;
+  font-weight: 500;
+}
+.hero-pills {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  background: transparent;
+  letter-spacing: 0.04em;
+}
+.pill.hot { color: var(--red); border-color: rgba(255,92,108,0.3); background: var(--red-dim); }
+
+/* ── BOTTOM TABS ── */
+.tabs {
+  position: fixed;
+  bottom: 0; left: 50%; right: 0;
+  transform: translateX(-50%);
+  width: 100%; max-width: 480px;
+  height: var(--tab-h);
+  background: rgba(10,10,16,0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  z-index: 1000;
+  display: flex;
+  align-items: stretch;
+  padding: 0 4px;
+}
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: none;
+  background: none;
+  color: var(--text3);
+  cursor: pointer;
+  padding: 10px 4px;
+  transition: color 0.2s;
+  position: relative;
+  font-family: 'Outfit', sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: var(--radius-sm);
+}
+.tab:hover { color: var(--text2); }
+.tab.active { color: var(--red); }
+.tab-icon { font-size: 1.15rem; line-height: 1; }
+.tab-label {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.tab-dot {
+  position: absolute;
+  top: 7px; right: 16px;
+  width: 7px; height: 7px;
+  background: var(--red);
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  display: none;
+}
+.tab-dot.show { display: block; }
+
+/* ── PANELS ── */
+.panel { display: none; padding: 10px 14px 14px; }
+.panel.active { display: block; }
+
+/* ── SECTION HEADING ── */
+.sh {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.sh-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.4rem;
+  color: var(--text);
+  font-weight: 400;
+}
+.sh-count {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text3);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── SURFACE CARDS ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 10px;
+}
+.card-inner { padding: 16px; }
+.card-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 13px;
+}
+
+/* ── FORM ELEMENTS ── */
+.flabel {
+  display: block;
+  font-size: 0.73rem;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.finput, .fselect, .ftextarea {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  padding: 11px 13px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.18s, background 0.18s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.finput:focus, .fselect:focus, .ftextarea:focus {
+  border-color: var(--red);
+  background: var(--bg3);
+}
+.finput::placeholder, .ftextarea::placeholder { color: var(--text3); font-weight: 400; }
+.fselect { cursor: pointer; }
+.fselect option { background: var(--bg3); color: var(--text); }
+.ftextarea { resize: none; min-height: 78px; line-height: 1.6; }
+.frow { margin-bottom: 13px; }
+.fg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 13px; }
+.ferr { font-size: 0.69rem; color: var(--red); margin-top: 4px; font-weight: 700; display: none; }
+.vbtn {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--red-dim); border: 1px solid rgba(255,92,108,0.25);
+  border-radius: var(--radius-xs); color: var(--red);
+  font-size: 0.63rem; padding: 2px 7px; cursor: pointer;
+  font-weight: 700; font-family: 'Outfit', sans-serif;
+  transition: background 0.18s;
+}
+.vbtn:hover { background: var(--red-mid); }
+
+/* ── PHOTO ZONE ── */
+.photo-zone {
+  width: 100%; aspect-ratio: 4/3;
+  border: 1.5px dashed var(--border2);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  cursor: pointer; overflow: hidden; position: relative;
+  transition: border-color 0.2s;
+  margin-bottom: 13px;
+}
+.photo-zone:hover { border-color: var(--red); }
+.photo-zone img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 13px;
+}
+.photo-hint {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 8px;
+  text-align: center; padding: 20px; z-index: 1;
+}
+.ph-icon { font-size: 2.5rem; opacity: 0.5; }
+.ph-title { font-weight: 800; color: var(--text2); font-size: 0.86rem; }
+.ph-sub { font-size: 0.72rem; color: var(--text3); line-height: 1.5; }
+.photo-uploading {
+  position: absolute; inset: 0;
+  background: rgba(10,10,16,0.8);
+  display: none; align-items: center; justify-content: center;
+  z-index: 5; border-radius: 13px;
+}
+.photo-uploading.show { display: flex; }
+.upload-spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--border2);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── TAGS ── */
+.tg { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 5px; }
+.topt {
+  padding: 5px 12px;
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  font-size: 0.74rem; font-weight: 700;
+  color: var(--text2); cursor: pointer;
+  transition: all 0.16s; user-select: none;
+  background: transparent;
+}
+.topt:hover { border-color: var(--red); color: var(--red); }
+.topt.sel { border-color: var(--red); background: var(--red-dim); color: var(--red); }
+.topt.energy.sel { border-color: var(--teal); background: var(--teal-dim); color: var(--teal); }
+
+/* ── PARKS ── */
+.parks-g { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 13px; }
+.popt {
+  padding: 9px 10px;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-sm);
+  font-size: 0.73rem; font-weight: 700;
+  color: var(--text2); cursor: pointer;
+  transition: all 0.16s; text-align: center; line-height: 1.4;
+  background: transparent;
+}
+.popt:hover { border-color: var(--teal); color: var(--teal); }
+.popt.sel { border-color: var(--teal); background: var(--teal-dim); color: var(--teal); }
+.popt.east { border-color: rgba(245,192,64,0.25); }
+.popt.east.sel { border-color: var(--amber); background: var(--amber-dim); color: var(--amber); }
+
+/* ── SUBMIT BUTTON ── */
+.sbtn {
+  width: 100%;
+  background: var(--red);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.96rem; font-weight: 800;
+  padding: 15px;
+  border-radius: var(--radius);
+  border: none; cursor: pointer;
+  box-shadow: 0 4px 28px var(--red-glow);
+  transition: transform 0.14s, opacity 0.18s;
+  letter-spacing: 0.03em;
+  margin-top: 6px;
+}
+.sbtn:hover { opacity: 0.9; }
+.sbtn:active { transform: scale(0.985); }
+.sbtn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+/* ── INFO NOTE ── */
+.info-note {
+  background: rgba(155,127,255,0.07);
+  border: 1px solid rgba(155,127,255,0.18);
+  border-radius: var(--radius-sm);
+  padding: 13px 14px; margin-bottom: 13px;
+  font-size: 0.79rem; color: var(--text2); line-height: 1.65;
+}
+.info-note strong { color: var(--text); display: block; margin-bottom: 3px; font-size: 0.81rem; }
+.safety-note {
+  background: var(--teal-dim);
+  border: 1px solid rgba(0,205,180,0.2);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px; margin-bottom: 13px;
+  font-size: 0.79rem; color: var(--text2); line-height: 1.65;
+}
+.safety-note strong { color: var(--teal); }
+
+/* ── SUCCESS CARD ── */
+.success-card {
+  background: var(--surface);
+  border: 1px solid rgba(255,92,108,0.25);
+  border-radius: var(--radius);
+  padding: 36px 20px; text-align: center;
+  display: none; margin-top: 8px;
+}
+.success-icon { font-size: 3rem; margin-bottom: 14px; }
+.success-title { font-family: 'Instrument Serif', serif; font-size: 1.6rem; color: var(--text); margin-bottom: 8px; }
+.success-sub { font-size: 0.86rem; color: var(--text2); line-height: 1.6; margin-bottom: 22px; }
+
+/* ── BROWSE FILTERS ── */
+.filter-bar {
+  display: flex; gap: 6px; margin-bottom: 14px;
+  overflow-x: auto; padding-bottom: 3px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.filter-bar::-webkit-scrollbar { display: none; }
+.fchip {
+  flex-shrink: 0;
+  padding: 6px 13px;
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  font-size: 0.71rem; font-weight: 700;
+  color: var(--text2); cursor: pointer;
+  white-space: nowrap; background: transparent;
+  transition: all 0.16s;
+  font-family: 'Outfit', sans-serif;
+}
+.fchip:hover { border-color: var(--red); color: var(--red); }
+.fchip.on { border-color: var(--red); background: var(--red-dim); color: var(--red); }
+
+/* ── PUP CARDS ── */
+.pup-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: border-color 0.18s, transform 0.14s, box-shadow 0.18s;
+}
+.pup-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+.pc-img {
+  width: 100%; height: 195px;
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 5rem; overflow: hidden; position: relative;
+}
+.pc-img img { width: 100%; height: 100%; object-fit: cover; }
+.pc-live {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(10,10,16,0.82);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.64rem; font-weight: 800;
+  color: var(--green);
+  display: flex; align-items: center; gap: 5px;
+  letter-spacing: 0.06em;
+}
+.pc-live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+.pc-east {
+  position: absolute; top: 10px; right: 10px;
+  background: rgba(245,192,64,0.15);
+  border: 1px solid rgba(245,192,64,0.35);
+  border-radius: 20px;
+  padding: 2px 8px;
+  font-size: 0.6rem; font-weight: 800;
+  color: var(--amber);
+  letter-spacing: 0.06em;
+}
+.pc-body { padding: 13px; }
+.pc-row1 { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 3px; }
+.pc-name { font-family: 'Instrument Serif', serif; font-size: 1.2rem; color: var(--text); }
+.pc-req-btn {
+  background: var(--red);
+  color: #fff; font-weight: 800;
+  font-size: 0.68rem; padding: 6px 13px;
+  border-radius: 20px; border: none; cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: opacity 0.16s;
+  letter-spacing: 0.04em; flex-shrink: 0;
+}
+.pc-req-btn:hover { opacity: 0.85; }
+.pc-req-btn.sent { background: var(--purple); }
+.pc-breed { font-size: 0.78rem; color: var(--text2); font-weight: 600; margin-bottom: 8px; }
+.pc-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 7px; }
+.ptag {
+  font-size: 0.64rem; font-weight: 800;
+  padding: 2px 8px; border-radius: 20px;
+  background: var(--red-dim); color: var(--red);
+  border: 1px solid rgba(255,92,108,0.15);
+}
+.ptag.e { background: var(--teal-dim); color: var(--teal); border-color: rgba(0,205,180,0.2); }
+.ptag.p { background: var(--purple-dim); color: var(--purple); border-color: rgba(155,127,255,0.2); }
+.pc-footer { font-size: 0.72rem; color: var(--text3); font-weight: 600; display: flex; align-items: center; gap: 7px; }
+.pc-sep { width: 3px; height: 3px; border-radius: 50%; background: currentColor; }
+
+/* ── PUP DETAIL MODAL ── */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.78);
+  display: none; align-items: flex-end; justify-content: center;
+}
+.modal-backdrop.open { display: flex; }
+.modal-sheet {
+  background: var(--surface2);
+  border-radius: 22px 22px 0 0;
+  width: 100%; max-width: 480px;
+  max-height: 91vh;
+  overflow-y: auto;
+  animation: sheetUp 0.28s cubic-bezier(0.4,0,0.2,1) both;
+  position: relative;
+}
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+.sheet-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 14px auto 0; }
+.sheet-close {
+  position: absolute; top: 10px; right: 12px;
+  width: 30px; height: 30px;
+  background: rgba(0,0,0,0.45);
+  border: none; border-radius: 50%;
+  color: rgba(255,255,255,0.65);
+  font-size: 0.85rem; cursor: pointer; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.18s;
+}
+.sheet-close:hover { background: rgba(0,0,0,0.65); }
+.sheet-photo {
+  width: 100%; height: 235px;
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 6rem; overflow: hidden;
+}
+.sheet-photo img { width: 100%; height: 100%; object-fit: cover; }
+.sheet-body { padding: 18px 18px 38px; }
+.sheet-name { font-family: 'Instrument Serif', serif; font-size: 1.5rem; color: var(--text); margin-bottom: 4px; }
+.sheet-breed { font-size: 0.85rem; color: var(--text2); font-weight: 600; margin-bottom: 14px; }
+.sheet-label {
+  font-size: 0.64rem; font-weight: 800;
+  letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 7px;
+}
+.sheet-bio {
+  font-size: 0.84rem; color: var(--text2); line-height: 1.65;
+  background: var(--bg2); padding: 12px 13px;
+  border-radius: var(--radius-sm); margin-bottom: 14px;
+}
+.sheet-main-btn {
+  width: 100%;
+  background: var(--red); color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.98rem; font-weight: 800;
+  padding: 15px; border-radius: var(--radius);
+  border: none; cursor: pointer;
+  box-shadow: 0 4px 22px var(--red-glow);
+  margin-bottom: 8px; letter-spacing: 0.03em;
+  transition: opacity 0.18s;
+}
+.sheet-main-btn:hover { opacity: 0.88; }
+.sheet-main-btn.sent { background: var(--purple); box-shadow: 0 4px 22px rgba(155,127,255,0.22); }
+
+/* ── MATCH OVERLAY ── */
+.match-overlay {
+  position: fixed; inset: 0; z-index: 900;
+  display: none; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: linear-gradient(135deg, rgba(200,40,65,0.97) 0%, rgba(100,20,40,0.98) 100%);
+  overflow: hidden;
+}
+.match-overlay.show { display: flex; animation: fadeScaleIn 0.42s ease both; }
+@keyframes fadeScaleIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+.confetti-wrap { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.conf-piece { position: absolute; animation: confFall linear infinite; }
+@keyframes confFall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+.match-kicker {
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.2em;
+  text-transform: uppercase; color: rgba(255,255,255,0.55);
+  margin-bottom: 6px;
+}
+.match-headline {
+  font-family: 'Instrument Serif', serif;
+  font-size: 3.2rem; color: #fff;
+  animation: popIn 0.55s 0.28s ease both;
+  transform: scale(0); text-align: center; margin-bottom: 6px;
+}
+@keyframes popIn { 0% { transform: scale(0); } 72% { transform: scale(1.1); } 100% { transform: scale(1); } }
+.match-sub { font-size: 0.9rem; color: rgba(255,255,255,0.7); font-weight: 600; margin-bottom: 28px; text-align: center; }
+.match-pups {
+  display: flex; gap: 16px; align-items: center; margin-bottom: 28px;
+  animation: slideUp 0.55s 0.45s ease both; opacity: 0; transform: translateY(22px);
+}
+@keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+.match-pupcard {
+  background: rgba(255,255,255,0.11);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: var(--radius); padding: 14px;
+  text-align: center; width: 130px;
+  backdrop-filter: blur(10px);
+}
+.match-pupphoto {
+  width: 70px; height: 70px; border-radius: 50%;
+  background: rgba(255,255,255,0.14);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.2rem; margin: 0 auto 8px;
+  border: 2px solid rgba(255,255,255,0.28); overflow: hidden;
+}
+.match-pupphoto img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.match-pupname { font-family: 'Instrument Serif', serif; font-size: 1rem; color: #fff; }
+.match-pupbreed { font-size: 0.68rem; color: rgba(255,255,255,0.58); }
+.match-heart { font-size: 2.2rem; animation: hbeat 0.75s 0.8s ease-in-out infinite alternate; }
+@keyframes hbeat { from { transform: scale(1); } to { transform: scale(1.22); } }
+.match-btns {
+  display: flex; flex-direction: column; gap: 8px;
+  width: 100%; max-width: 280px;
+  animation: slideUp 0.55s 0.62s ease both; opacity: 0; transform: translateY(22px);
+}
+.match-btn {
+  padding: 14px 20px; border-radius: var(--radius-sm);
+  font-family: 'Outfit', sans-serif; font-weight: 800;
+  font-size: 0.87rem; border: none; cursor: pointer;
+  transition: transform 0.14s; text-align: center;
+  letter-spacing: 0.02em;
+}
+.match-btn:active { transform: scale(0.97); }
+.match-btn.primary { background: #fff; color: var(--red); }
+.match-btn.secondary { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.24) !important; }
+.match-btn.ghost { background: transparent; color: rgba(255,255,255,0.42); font-size: 0.78rem; }
+
+/* ── SAFETY MODAL ── */
+.safety-backdrop {
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(0,0,0,0.82);
+  display: none; align-items: flex-end; justify-content: center;
+}
+.safety-backdrop.open { display: flex; }
+.safety-sheet {
+  background: var(--surface2);
+  border-radius: 22px 22px 0 0;
+  padding: 22px 18px 44px;
+  width: 100%; max-width: 480px;
+  animation: sheetUp 0.28s cubic-bezier(0.4,0,0.2,1) both;
+  max-height: 90vh; overflow-y: auto;
+}
+.safety-tag { font-size: 0.65rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal); margin-bottom: 7px; }
+.safety-title { font-family: 'Instrument Serif', serif; font-size: 1.35rem; color: var(--text); margin-bottom: 4px; }
+.safety-sub { font-size: 0.81rem; color: var(--text2); line-height: 1.6; margin-bottom: 18px; }
+.check-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.check-row:last-of-type { border-bottom: none; }
+.check-box {
+  width: 22px; height: 22px; border-radius: 6px;
+  border: 1.5px solid var(--border2); background: var(--bg2);
+  cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; transition: all 0.18s; margin-top: 2px;
+}
+.check-box.checked { background: var(--green); border-color: var(--green); color: #fff; font-weight: 800; }
+.check-text { font-size: 0.83rem; color: var(--text); line-height: 1.5; font-weight: 600; }
+.check-text span { color: var(--text2); font-weight: 400; display: block; font-size: 0.75rem; margin-top: 2px; }
+.caution-box {
+  background: rgba(255,92,108,0.07);
+  border: 1px solid rgba(255,92,108,0.22);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px; margin: 10px 0;
+  font-size: 0.79rem; color: var(--red); line-height: 1.6;
+  display: none;
+}
+.caution-box strong { display: block; margin-bottom: 3px; font-weight: 800; }
+.loc-select {
+  width: 100%; background: var(--bg2);
+  border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  padding: 11px 13px; font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem; color: var(--text); outline: none;
+  -webkit-appearance: none; appearance: none;
+  margin: 8px 0; transition: border-color 0.18s; cursor: pointer;
+}
+.loc-select:focus { border-color: var(--teal); }
+.loc-select option { background: var(--bg3); }
+.confirm-btn {
+  width: 100%;
+  background: var(--green); color: #fff;
+  font-family: 'Outfit', sans-serif; font-size: 0.96rem; font-weight: 800;
+  padding: 15px; border-radius: var(--radius);
+  border: none; cursor: pointer; margin-top: 14px;
+  letter-spacing: 0.03em; transition: opacity 0.18s;
+}
+.confirm-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── CONFIRM SUCCESS OVERLAY ── */
+.confirm-overlay {
+  position: fixed; inset: 0; z-index: 1100;
+  background: rgba(0,0,0,0.88);
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.confirm-overlay.show { display: flex; animation: fadeScaleIn 0.28s ease both; }
+.confirm-card {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 20px; padding: 34px 24px;
+  width: 100%; max-width: 340px; text-align: center;
+}
+.confirm-card-icon { font-size: 3rem; margin-bottom: 16px; }
+.confirm-card-title { font-family: 'Instrument Serif', serif; font-size: 1.55rem; color: var(--text); margin-bottom: 8px; }
+.confirm-card-sub { font-size: 0.84rem; color: var(--text2); line-height: 1.65; margin-bottom: 22px; }
+.confirm-card-btn {
+  width: 100%; background: var(--red); color: #fff;
+  font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 800;
+  padding: 14px; border-radius: var(--radius-sm); border: none; cursor: pointer;
+  letter-spacing: 0.03em;
+}
+
+/* ── MATCHES PANEL ── */
+.empty-state { text-align: center; padding: 50px 20px; }
+.empty-emoji { font-size: 3.2rem; margin-bottom: 14px; opacity: 0.45; }
+.empty-title { font-family: 'Instrument Serif', serif; font-size: 1.25rem; color: var(--text); margin-bottom: 7px; }
+.empty-sub { font-size: 0.83rem; color: var(--text2); line-height: 1.65; }
+.match-request-card {
+  background: var(--surface);
+  border: 1px solid rgba(155,127,255,0.18);
+  border-radius: var(--radius);
+  padding: 14px; margin-bottom: 8px;
+}
+.mrc-title { font-family: 'Instrument Serif', serif; font-size: 1rem; color: var(--purple); margin-bottom: 4px; }
+.mrc-status { font-size: 0.77rem; color: var(--text2); font-weight: 600; }
+.mrc-actions { display: flex; gap: 7px; margin-top: 11px; }
+.mrc-btn {
+  flex: 1; padding: 9px;
+  border-radius: var(--radius-sm);
+  font-family: 'Outfit', sans-serif; font-weight: 800;
+  font-size: 0.77rem; border: none; cursor: pointer;
+  letter-spacing: 0.04em; transition: opacity 0.18s;
+}
+.mrc-btn.accept { background: var(--green); color: #fff; }
+.mrc-btn.safety { background: var(--surface2); color: var(--teal); border: 1px solid rgba(0,205,180,0.25); }
+.mrc-btn:hover { opacity: 0.88; }
+
+/* ── WATCH BOARD ── */
+.outcome-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 11px; }
+.outcome-btn {
+  padding: 12px 10px;
+  border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.78rem;
+  color: var(--text2); cursor: pointer; text-align: center;
+  background: transparent; transition: all 0.18s;
+}
+.outcome-btn.safe.sel { border-color: var(--green); background: var(--green-dim); color: var(--green); }
+.outcome-btn.concern.sel { border-color: var(--red); background: var(--red-dim); color: var(--red); }
+.watch-input {
+  width: 100%; background: var(--bg2);
+  border: 1px solid var(--border2); border-radius: var(--radius-sm);
+  padding: 10px 13px; font-family: 'Outfit', sans-serif;
+  font-size: 0.87rem; color: var(--text); outline: none;
+  margin-bottom: 7px; transition: border-color 0.18s;
+  -webkit-appearance: none;
+}
+.watch-input:focus { border-color: var(--teal); }
+.watch-input::placeholder { color: var(--text3); }
+.watch-submit {
+  width: 100%; background: var(--teal); color: #0A0A10;
+  font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 800;
+  padding: 13px; border-radius: var(--radius-sm); border: none; cursor: pointer;
+  letter-spacing: 0.04em; transition: opacity 0.18s;
+}
+.watch-submit:hover { opacity: 0.88; }
+.watch-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 12px;
+  margin-bottom: 7px;
+}
+.watch-card.safe { border-color: rgba(45,203,122,0.22); }
+.watch-card.concern { border-color: rgba(255,92,108,0.22); }
+.wc-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.wc-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.wc-dot.safe { background: var(--green); }
+.wc-dot.concern { background: var(--red); }
+.wc-name { font-size: 0.82rem; font-weight: 800; color: var(--text); flex: 1; }
+.wc-time { font-size: 0.68rem; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+.wc-outcome { font-size: 0.76rem; color: var(--text2); font-weight: 700; }
+.wc-note { font-size: 0.73rem; color: var(--text3); margin-top: 4px; font-style: italic; }
+
+/* ── MY PROFILE TAB ── */
+.my-profile-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; margin-bottom: 12px;
+}
+.my-profile-photo {
+  width: 100%; height: 180px; background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 5rem; overflow: hidden;
+}
+.my-profile-photo img { width: 100%; height: 100%; object-fit: cover; }
+.my-profile-body { padding: 14px; }
+.my-profile-name { font-family: 'Instrument Serif', serif; font-size: 1.35rem; color: var(--text); margin-bottom: 3px; }
+.my-profile-breed { font-size: 0.8rem; color: var(--text2); font-weight: 600; margin-bottom: 12px; }
+.my-action-row { display: flex; gap: 8px; }
+.my-btn {
+  flex: 1; padding: 11px;
+  border-radius: var(--radius-sm);
+  font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.79rem;
+  border: none; cursor: pointer; letter-spacing: 0.04em; transition: opacity 0.18s;
+}
+.my-btn:hover { opacity: 0.85; }
+.my-btn.edit { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); }
+.my-btn.delete { background: rgba(255,92,108,0.1); color: var(--red); border: 1px solid rgba(255,92,108,0.25); }
+
+/* ── VIDEO SECTION ── */
+.video-section {
+  background: var(--purple-dim); border: 1px solid rgba(155,127,255,0.2);
+  border-radius: var(--radius); padding: 18px; margin: 14px 0; text-align: center;
+}
+.video-section-title { font-family: 'Instrument Serif', serif; font-size: 1.05rem; color: var(--purple); margin-bottom: 5px; }
+.video-section-sub { font-size: 0.78rem; color: var(--text2); line-height: 1.55; margin-bottom: 13px; }
+.video-upload-zone {
+  border: 1.5px dashed rgba(155,127,255,0.3); border-radius: var(--radius-sm);
+  padding: 14px; cursor: pointer; transition: border-color 0.18s;
+}
+.video-upload-zone:hover { border-color: rgba(155,127,255,0.5); }
+.video-upload-label { font-size: 0.81rem; font-weight: 700; color: var(--purple); }
+.video-upload-sub { font-size: 0.72rem; color: var(--text3); margin-top: 3px; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 22px 16px 10px; text-align: center;
+}
+.footer-link {
+  display: inline-block; font-size: 0.78rem; font-weight: 700;
+  color: var(--red); text-decoration: none; margin-bottom: 9px;
+  letter-spacing: 0.04em;
+}
+.footer-copy {
+  font-size: 0.69rem; color: var(--text3); line-height: 1.75;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: calc(var(--tab-h) + 16px); left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--surface3); border: 1px solid var(--border2);
+  border-radius: 30px; padding: 10px 20px;
+  font-size: 0.82rem; font-weight: 700; color: var(--text);
+  z-index: 2000; pointer-events: none;
+  opacity: 0; transition: all 0.28s;
+  white-space: nowrap; max-width: calc(100% - 32px);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── LOADING SKELETON ── */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.skel-card { height: 260px; border-radius: var(--radius); margin-bottom: 10px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+.anim-fade { animation: fadeUp 0.35s ease both; }
+
+@media (max-width: 380px) {
+  .hero-title { font-size: 1.85rem; }
+  .fg2 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">
+    <div class="logo-paw"></div>
+    PawMatch
+  </a>
+  <div class="nav-right">
+    <div class="location-badge">East Side <span>85710</span></div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-eyebrow">Tucson's Dog Playdate App</div>
+    <h1 class="hero-title">
+      Find Your Dog's<br>
+      <em>Perfect Match</em>
+    </h1>
+    <p class="hero-sub">Connect East Side Tucson pups with compatible playmates. Real meetups. Real community. Zero nonsense.</p>
+    <div class="hero-pills">
+      <span class="pill hot">Live Community</span>
+      <span class="pill">Privacy-First</span>
+      <span class="pill">Safety Verified</span>
+      <span class="pill">Free Forever</span>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAVIGATION TABS -->
+  <div class="tabs">
+    <button class="tab active" id="tabCreate" onclick="switchTab('Create')">
+      <span class="tab-icon">✦</span>
+      <span class="tab-label">Profile</span>
+    </button>
+    <button class="tab" id="tabBrowse" onclick="switchTab('Browse')">
+      <span class="tab-icon">◈</span>
+      <span class="tab-label">Browse</span>
+    </button>
+    <button class="tab" id="tabMatches" onclick="switchTab('Matches')">
+      <span class="tab-icon">♥</span>
+      <span class="tab-label">Matches</span>
+      <span class="tab-dot" id="matchDot"></span>
+    </button>
+    <button class="tab" id="tabWatch" onclick="switchTab('Watch')">
+      <span class="tab-icon">◎</span>
+      <span class="tab-label">Safety</span>
+    </button>
+    <button class="tab" id="tabMe" onclick="switchTab('Me')">
+      <span class="tab-icon">◉</span>
+      <span class="tab-label">My Pup</span>
+    </button>
+  </div>
+
+  <!-- ===================== CREATE PROFILE PANEL ===================== -->
+  <div class="panel active" id="panelCreate">
+
+    <div id="createForm">
+      <div class="sh"><div class="sh-title">Create Profile</div></div>
+
+      <!-- Photo Upload -->
+      <div class="photo-zone" id="photoZone" onclick="handlePhotoClick()" role="button" tabindex="0" aria-label="Upload pup photo">
+        <img id="pupPhotoPreview" style="display:none" alt="Pup photo preview"/>
+        <div class="photo-uploading" id="photoUploading">
+          <div class="upload-spinner"></div>
+        </div>
+        <div class="photo-hint" id="photoHint">
+          <div class="ph-icon">📸</div>
+          <div class="ph-title">Upload Your Pup's Photo</div>
+          <div class="ph-sub">Dogs only — no people in frame.<br>Tap to choose from your camera roll.</div>
+        </div>
+      </div>
+      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelected(this)" aria-label="Choose pup photo"/>
+
+      <!-- Basic Info -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-label">Dog Info</div>
+          <div class="frow">
+            <label class="flabel" for="inp_name">Pup's Name *</label>
+            <input class="finput" type="text" id="inp_name" placeholder="e.g. Luna" maxlength="50" autocomplete="off"/>
+            <div class="ferr" id="err_name">Name is required</div>
+          </div>
+          <div class="fg2">
+            <div>
+              <label class="flabel" for="inp_breed">Breed</label>
+              <input class="finput" type="text" id="inp_breed" placeholder="e.g. Goldendoodle" maxlength="60" autocomplete="off"/>
+            </div>
+            <div>
+              <label class="flabel" for="inp_age">Age *</label>
+              <select class="fselect" id="inp_age">
+                <option value="">Select...</option>
+                <option>Puppy (under 1)</option>
+                <option>1 to 2 years</option>
+                <option>3 to 5 years</option>
+                <option>6 to 9 years</option>
+                <option>Senior (10+)</option>
+              </select>
+              <div class="ferr" id="err_age">Required</div>
+            </div>
+          </div>
+          <div class="fg2">
+            <div>
+              <label class="flabel" for="inp_size">Size *</label>
+              <select class="fselect" id="inp_size">
+                <option value="">Select...</option>
+                <option>Tiny (under 10 lbs)</option>
+                <option>Small (10-25 lbs)</option>
+                <option>Medium (25-50 lbs)</option>
+                <option>Large (50-80 lbs)</option>
+                <option>XL (80+ lbs)</option>
+              </select>
+              <div class="ferr" id="err_size">Required</div>
+            </div>
+            <div>
+              <label class="flabel" for="inp_sex">Sex</label>
+              <select class="fselect" id="inp_sex">
+                <option value="">Select...</option>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Personality -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-label">Personality</div>
+          <div class="frow">
+            <label class="flabel">Traits</label>
+            <div class="tg" id="traitGroup">
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Friendly</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Calm</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Playful</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Gentle</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Protective</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Shy at first</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Dog-friendly</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Kid-friendly</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Cat-friendly</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Fetch lover</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Water dog</span>
+              <span class="topt" onclick="toggleTag(this)" role="checkbox" aria-checked="false" tabindex="0">Trail runner</span>
+            </div>
+          </div>
+          <div class="frow">
+            <label class="flabel">Energy Level</label>
+            <div class="tg" id="energyGroup">
+              <span class="topt energy" onclick="toggleEnergy(this)" role="radio" tabindex="0">Low - couch pup</span>
+              <span class="topt energy" onclick="toggleEnergy(this)" role="radio" tabindex="0">Medium - daily walks</span>
+              <span class="topt energy" onclick="toggleEnergy(this)" role="radio" tabindex="0">High - lets go</span>
+              <span class="topt energy" onclick="toggleEnergy(this)" role="radio" tabindex="0">Turbo - never stops</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Favorite Parks - East Side Emphasized -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-label">Favorite Parks</div>
+          <div style="font-size:0.7rem;color:var(--amber);font-weight:700;margin-bottom:9px;letter-spacing:0.06em;">EAST SIDE FAVORITES HIGHLIGHTED</div>
+          <div class="parks-g">
+            <div class="popt east" onclick="togglePark(this)">Brandi Fenton Dog Park</div>
+            <div class="popt east" onclick="togglePark(this)">Agua Caliente Park</div>
+            <div class="popt east" onclick="togglePark(this)">Saguaro National Park East</div>
+            <div class="popt east" onclick="togglePark(this)">Pantano River Park</div>
+            <div class="popt" onclick="togglePark(this)">Himmel Park</div>
+            <div class="popt" onclick="togglePark(this)">Sabino Canyon</div>
+            <div class="popt" onclick="togglePark(this)">Reid Park Dog Run</div>
+            <div class="popt" onclick="togglePark(this)">Tumamoc Hill Trail</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio and Owner Info -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="frow">
+            <label class="flabel" for="inp_bio">
+              About Your Pup
+              <button class="vbtn" onclick="startVoice('inp_bio')" aria-label="Voice input for bio">🎤 Speak</button>
+            </label>
+            <textarea class="ftextarea" id="inp_bio" maxlength="500"
+              placeholder="What is their vibe? Favorite trick? What kind of friend are they looking for?"></textarea>
+          </div>
+          <div class="fg2">
+            <div>
+              <label class="flabel" for="inp_owner">
+                Your First Name *
+                <button class="vbtn" onclick="startVoice('inp_owner')" aria-label="Voice input for name">🎤</button>
+              </label>
+              <input class="finput" type="text" id="inp_owner" placeholder="First name only" maxlength="40" autocomplete="given-name"/>
+              <div class="ferr" id="err_owner">Required</div>
+            </div>
+            <div>
+              <label class="flabel" for="inp_zip">Neighborhood / Zip *</label>
+              <input class="finput" type="text" id="inp_zip" placeholder="e.g. 85710, East Side" maxlength="60" autocomplete="postal-code"/>
+              <div class="ferr" id="err_zip">Required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-note">
+        <strong>Privacy-First - Always</strong>
+        First name and neighborhood only. No last names, addresses, or contact info shared until both owners agree to connect. Your pup's photo is stored securely.
+      </div>
+
+      <button class="sbtn" id="createBtn" onclick="createProfile()">Create My Pup's Profile</button>
+    </div>
+
+    <!-- Success State -->
+    <div class="success-card" id="createSuccess">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">Profile is Live!</div>
+      <div class="success-sub">Your pup is now visible to the East Side Tucson community. Start browsing for their perfect playdate match.</div>
+      <button class="sbtn" onclick="switchTab('Browse')">Browse Tucson Pups</button>
+    </div>
+
+  </div><!-- /panelCreate -->
+
+  <!-- ===================== BROWSE PANEL ===================== -->
+  <div class="panel" id="panelBrowse">
+    <div class="sh">
+      <div class="sh-title">Pups Near You</div>
+      <div class="sh-count" id="browseCount">--</div>
+    </div>
+    <div class="filter-bar" role="group" aria-label="Filter pups">
+      <button class="fchip on" onclick="setFilter('all',this)">All Pups</button>
+      <button class="fchip" onclick="setFilter('east',this)">East Side</button>
+      <button class="fchip" onclick="setFilter('small',this)">Small</button>
+      <button class="fchip" onclick="setFilter('medium',this)">Medium</button>
+      <button class="fchip" onclick="setFilter('large',this)">Large</button>
+      <button class="fchip" onclick="setFilter('energetic',this)">High Energy</button>
+      <button class="fchip" onclick="setFilter('calm',this)">Calm</button>
+    </div>
+    <div id="browseContainer">
+      <div class="skeleton skel-card"></div>
+      <div class="skeleton skel-card" style="height:220px"></div>
+    </div>
+  </div>
+
+  <!-- ===================== MATCHES PANEL ===================== -->
+  <div class="panel" id="panelMatches">
+    <div class="sh"><div class="sh-title">Your Matches</div></div>
+    <div id="matchesContainer"></div>
+  </div>
+
+  <!-- ===================== WATCH BOARD PANEL ===================== -->
+  <div class="panel" id="panelWatch">
+    <div class="sh"><div class="sh-title">Safety Board</div></div>
+    <p style="font-size:0.83rem;color:var(--text2);line-height:1.65;margin-bottom:16px;">
+      Community safety reports from Tucson pup owners. Post your outcome after every playdate to keep the East Side safe.
+    </p>
+
+    <div class="card">
+      <div class="card-inner">
+        <div class="card-label">Report Your Outcome</div>
+        <div class="outcome-btns">
+          <button class="outcome-btn safe" id="outSafe" onclick="setOutcome('safe')" aria-pressed="false">Made it home safely</button>
+          <button class="outcome-btn concern" id="outConcern" onclick="setOutcome('concern')" aria-pressed="false">Report an issue</button>
+        </div>
+        <input class="watch-input" type="text" id="watch_pup" placeholder="Your pup's name" maxlength="50" aria-label="Pup name"/>
+        <input class="watch-input" type="text" id="watch_owner" placeholder="Your first name" maxlength="40" aria-label="Your first name"/>
+        <textarea class="watch-input" id="watch_note" placeholder="Brief note (optional)..." maxlength="300"
+          style="min-height:58px;resize:none;display:block" aria-label="Optional note"></textarea>
+        <button class="watch-submit" id="watchSubmitBtn" onclick="submitWatch()">Post to Safety Board</button>
+      </div>
+    </div>
+
+    <!-- Video Share -->
+    <div class="video-section">
+      <div class="video-section-title">Share Your Playdate Clip</div>
+      <div class="video-section-sub">10 to 20 seconds of your pups playing. Helps owners see real dog interactions before committing to a meetup.</div>
+      <div class="video-upload-zone" onclick="document.getElementById('videoInput').click()" role="button" tabindex="0" aria-label="Upload playdate video">
+        <input type="file" id="videoInput" accept="video/*" style="display:none" onchange="handleVideoUpload(this)"/>
+        <div class="video-upload-label">Tap to upload playdate video</div>
+        <div class="video-upload-sub">MP4 or MOV, max 50MB</div>
+      </div>
+    </div>
+
+    <div id="watchBoardContainer">
+      <div class="skeleton skel-card" style="height:80px"></div>
+    </div>
+  </div>
+
+  <!-- ===================== MY PUP PANEL ===================== -->
+  <div class="panel" id="panelMe">
+    <div class="sh"><div class="sh-title">My Pup</div></div>
+    <div id="myPupContainer"></div>
+  </div>
+
+  <footer>
+    <a class="footer-link" href="https://tucson-pet-finder.vercel.app">Back to Tucson Pet Finder</a>
+    <div class="footer-copy">
+      PawMatch Tucson - East Side 85710<br>
+      Built by Lamar Myers - VTREI, LLC - AI&amp;I<br>
+      Privacy-First - Zero Dummy Data - 100% Free
+    </div>
+  </footer>
+
+</div><!-- /page -->
+
+<!-- ===================== PUP DETAIL MODAL ===================== -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)" role="dialog" aria-modal="true" aria-labelledby="modalPupName">
+  <div class="modal-sheet" id="modalSheet">
+    <button class="sheet-close" onclick="closeModal()" aria-label="Close">&times;</button>
+    <div class="sheet-handle"></div>
+    <div class="sheet-photo" id="modalPhoto">🐶</div>
+    <div class="sheet-body">
+      <div class="sheet-name" id="modalPupName"></div>
+      <div class="sheet-breed" id="modalBreed"></div>
+      <div style="margin-bottom:13px">
+        <div class="sheet-label">Personality</div>
+        <div class="pc-tags" id="modalTags"></div>
+      </div>
+      <div style="margin-bottom:13px">
+        <div class="sheet-label">Favorite Parks</div>
+        <div class="pc-tags" id="modalParks"></div>
+      </div>
+      <div style="margin-bottom:13px">
+        <div class="sheet-label">About</div>
+        <div class="sheet-bio" id="modalBio"></div>
+      </div>
+      <div style="margin-bottom:16px">
+        <div class="sheet-label">Owner and Location</div>
+        <div style="font-size:0.83rem;color:var(--text2);font-weight:600" id="modalOwner"></div>
+      </div>
+      <div class="info-note">
+        <strong>Privacy Protected</strong>
+        Contact info is only shared after both owners agree. Always meet at a public park first.
+      </div>
+      <button class="sheet-main-btn" id="modalMatchBtn" onclick="sendRequest()">Request a Playdate</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SAFETY CHECKLIST MODAL ===================== -->
+<div class="safety-backdrop" id="safetyBackdrop" role="dialog" aria-modal="true" aria-labelledby="safetyTitle">
+  <div class="safety-sheet">
+    <div style="width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 18px"></div>
+    <div class="safety-tag">Before You Meet</div>
+    <div class="safety-title" id="safetyTitle">Safety Checklist</div>
+    <div class="safety-sub">Complete every step before your first in-person meetup to keep both pups and owners safe.</div>
+
+    <label class="flabel">Choose your meetup location</label>
+    <select class="loc-select" id="meetupLocation" onchange="onLocationChange()">
+      <option value="">Select a location...</option>
+      <optgroup label="Recommended - East Side Tucson">
+        <option value="safe">Brandi Fenton Dog Park</option>
+        <option value="safe">Agua Caliente Regional Park</option>
+        <option value="safe">Pantano River Park</option>
+        <option value="safe">Saguaro National Park East</option>
+      </optgroup>
+      <optgroup label="Also Good - Public and Safe">
+        <option value="safe">Himmel Park Dog Area</option>
+        <option value="safe">Reid Park Dog Run</option>
+        <option value="safe">Sabino Canyon</option>
+        <option value="safe">Tumamoc Hill Trail</option>
+      </optgroup>
+      <optgroup label="Not Recommended - Use Caution">
+        <option value="caution">Private home or backyard</option>
+        <option value="caution">Other location</option>
+      </optgroup>
+    </select>
+
+    <div class="caution-box" id="cautionBox">
+      <strong>Caution - Non-Recommended Location</strong>
+      We strongly recommend a public dog park for first meetups. Meeting privately carries added risk for both parties.
+    </div>
+
+    <div class="check-row">
+      <div class="check-box" id="chk1" onclick="toggleCheck('chk1')" role="checkbox" aria-checked="false" tabindex="0"></div>
+      <div class="check-text">
+        I have confirmed the meetup time and location with the other owner
+        <span>Both owners agree on exactly where and when to meet</span>
+      </div>
+    </div>
+    <div class="check-row">
+      <div class="check-box" id="chk2" onclick="toggleCheck('chk2')" role="checkbox" aria-checked="false" tabindex="0"></div>
+      <div class="check-text">
+        Both dogs are vaccinated and will meet on-leash first
+        <span>First meetings always start leashed regardless of how friendly either dog is</span>
+      </div>
+    </div>
+    <div class="check-row">
+      <div class="check-box" id="chk3" onclick="toggleCheck('chk3')" role="checkbox" aria-checked="false" tabindex="0"></div>
+      <div class="check-text">
+        I will post my outcome on the Safety Board after the playdate
+        <span>Keeps the whole East Side Tucson community informed and safe</span>
+      </div>
+    </div>
+    <div class="check-row" id="cautionRow" style="display:none">
+      <div class="check-box" id="chk4" onclick="toggleCheck('chk4')" role="checkbox" aria-checked="false" tabindex="0"></div>
+      <div class="check-text" style="color:var(--red)">
+        I understand this is a non-recommended location and I accept the additional risk
+        <span style="color:var(--text2)">Required when meeting outside a public dog park</span>
+      </div>
+    </div>
+
+    <button class="confirm-btn" id="safetyConfirmBtn" onclick="confirmSafety()" disabled>
+      Confirm - Set Up the Playdate
+    </button>
+  </div>
+</div>
+
+<!-- ===================== MATCH CELEBRATION OVERLAY ===================== -->
+<div class="match-overlay" id="matchOverlay" role="dialog" aria-modal="true" aria-label="Match celebration">
+  <div class="confetti-wrap" id="confettiWrap"></div>
+  <div class="match-kicker">New Connection</div>
+  <div class="match-headline">It's a Match!</div>
+  <div class="match-sub">Two East Side Tucson pups are about to become best friends</div>
+  <div class="match-pups" id="matchPups">
+    <div class="match-pupcard">
+      <div class="match-pupphoto" id="matchPhotoA">🐶</div>
+      <div class="match-pupname" id="matchNameA">Your Pup</div>
+      <div class="match-pupbreed" id="matchBreedA"></div>
+    </div>
+    <div class="match-heart">❤️</div>
+    <div class="match-pupcard">
+      <div class="match-pupphoto" id="matchPhotoB">🐶</div>
+      <div class="match-pupname" id="matchNameB">New Friend</div>
+      <div class="match-pupbreed" id="matchBreedB"></div>
+    </div>
+  </div>
+  <div class="match-btns">
+    <button class="match-btn primary" onclick="closeMatch(); openSafety();">Set Up Safe Playdate</button>
+    <button class="match-btn secondary" onclick="closeMatch(); switchTab('Watch');">Share a Video After</button>
+    <button class="match-btn ghost" onclick="closeMatch()">Maybe later</button>
+  </div>
+</div>
+
+<!-- ===================== CONFIRM SUCCESS OVERLAY ===================== -->
+<div class="confirm-overlay" id="confirmOverlay" role="dialog" aria-modal="true">
+  <div class="confirm-card">
+    <div class="confirm-card-icon">🐾</div>
+    <div class="confirm-card-title">Playdate Confirmed!</div>
+    <div class="confirm-card-sub">Your safety checklist is complete. Have an amazing playdate and remember to post your outcome on the Safety Board afterward.</div>
+    <button class="confirm-card-btn" onclick="closeConfirm()">Let's Do This</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toastMsg" role="alert" aria-live="polite"></div>
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+
+/* ============================================================
+   PAWMATCH - PRODUCTION JAVASCRIPT
+   Tucson East Side 85710
+   Zero dummy data - real Supabase integration
+   All credentials are ASCII placeholder tokens below.
+   Replace SUPABASE_PROJECT_URL and SUPABASE_ANON_KEY
+   with your real Supabase project values before deployment.
+   ============================================================ */
+
+// --- CONFIGURATION ---
+// Replace these two values with your real Supabase credentials.
+// Never commit real credentials to a public GitHub repo.
+// Use Vercel environment variables for the anon key in production.
+var SUPA_URL = '[SUPABASE_PROJECT_URL]';
+var SUPA_KEY = '[SUPABASE_ANON_KEY]';
+
+// Storage bucket name (create this in Supabase Dashboard > Storage)
+var STORAGE_BUCKET = 'pup-photos';
+
+// East Side zip codes for filtering
+var EAST_SIDE_ZIPS = ['85710', '85711', '85712', '85715', '85730', '85748', '85749', '85750'];
+
+function isConfigured() {
+  return SUPA_URL !== '[SUPABASE_PROJECT_URL]' && SUPA_KEY !== '[SUPABASE_ANON_KEY]';
+}
+
+function getHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SUPA_KEY,
+    'Authorization': 'Bearer ' + SUPA_KEY
+  };
+}
+
+// --- DEVICE IDENTITY (prevents duplicate profiles) ---
+function getDeviceToken() {
+  var tok = localStorage.getItem('pm_device');
+  if (!tok) {
+    tok = 'dt_' + Date.now() + '_' + Math.random().toString(36).slice(2, 10);
+    localStorage.setItem('pm_device', tok);
+  }
+  return tok;
+}
+
+// --- STATE ---
+var myId       = localStorage.getItem('pm_myId') || null;
+var myProfile  = JSON.parse(localStorage.getItem('pm_myProf') || 'null');
+var myMatches  = JSON.parse(localStorage.getItem('pm_matches') || '[]');
+var allPups    = [];
+var activeFilter = 'all';
+var curViewPup = null;
+var watchOutcome = null;
+
+// --- XSS SANITIZER (used on ALL user-supplied data before render) ---
+function esc(str) {
+  if (str == null) return '';
+  var d = document.createElement('div');
+  d.appendChild(document.createTextNode(String(str)));
+  return d.innerHTML;
+}
+
+// --- TOAST ---
+var toastTimer = null;
+function toast(msg, dur) {
+  var el = document.getElementById('toastMsg');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { el.classList.remove('show'); }, dur || 2800);
+}
+
+// --- TAB NAVIGATION ---
+var tabs = ['Create', 'Browse', 'Matches', 'Watch', 'Me'];
+function switchTab(name) {
+  tabs.forEach(function(t) {
+    var tab = document.getElementById('tab' + t);
+    var panel = document.getElementById('panel' + t);
+    if (tab) tab.classList.toggle('active', t === name);
+    if (panel) panel.classList.toggle('active', t === name);
+  });
+  if (name === 'Browse') loadBrowse();
+  if (name === 'Matches') loadMatches();
+  if (name === 'Watch') loadWatch();
+  if (name === 'Me') loadMyProfile();
+}
+
+// --- VOICE INPUT ---
+function startVoice(fieldId) {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { toast('Voice input requires Chrome or Safari.'); return; }
+  var el = document.getElementById(fieldId);
+  var prev = el.value;
+  var r = new SR();
+  r.lang = 'en-US';
+  r.interimResults = false;
+  r.onstart = function() {
+    el.placeholder = 'Listening...';
+    el.style.borderColor = 'var(--red)';
+  };
+  r.onresult = function(e) {
+    el.value = e.results[0][0].transcript;
+    el.placeholder = '';
+    el.style.borderColor = '';
+  };
+  r.onerror = function() {
+    el.value = prev;
+    el.placeholder = 'Try again';
+    el.style.borderColor = '';
+    setTimeout(function() { el.placeholder = ''; }, 1500);
+  };
+  r.start();
+}
+
+// --- PHOTO HANDLING ---
+var pendingPhotoUrl = '';
+var pendingPhotoBase64 = '';
+
+function handlePhotoClick() {
+  if (!confirm('Please upload a photo of your dog only.\n\nNo people should be visible in the photo.\n\nTap OK to choose your photo.')) return;
+  document.getElementById('fileInput').click();
+}
+
+function handleFileSelected(input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (file.size > 8 * 1024 * 1024) { toast('Photo must be under 8MB.'); return; }
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    pendingPhotoBase64 = e.target.result;
+    var img = document.getElementById('pupPhotoPreview');
+    img.src = pendingPhotoBase64;
+    img.style.display = 'block';
+    document.getElementById('photoHint').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadPhotoToStorage(file) {
+  if (!isConfigured()) {
+    return pendingPhotoBase64;
+  }
+  var ext = file.name.split('.').pop() || 'jpg';
+  var filename = getDeviceToken() + '_' + Date.now() + '.' + ext;
+  var res = await fetch(
+    SUPA_URL + '/storage/v1/object/' + STORAGE_BUCKET + '/' + filename,
+    {
+      method: 'POST',
+      headers: {
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY,
+        'Content-Type': file.type,
+        'x-upsert': 'true'
+      },
+      body: file
+    }
+  );
+  if (!res.ok) throw new Error('Photo upload failed');
+  return SUPA_URL + '/storage/v1/object/public/' + STORAGE_BUCKET + '/' + filename;
+}
+
+// --- TAG TOGGLES ---
+function toggleTag(el) {
+  el.classList.toggle('sel');
+  el.setAttribute('aria-checked', el.classList.contains('sel') ? 'true' : 'false');
+}
+function toggleEnergy(el) {
+  document.querySelectorAll('.topt.energy').forEach(function(t) {
+    t.classList.remove('sel');
+    t.setAttribute('aria-checked', 'false');
+  });
+  el.classList.add('sel');
+  el.setAttribute('aria-checked', 'true');
+}
+function togglePark(el) {
+  el.classList.toggle('sel');
+}
+function getSelected(selector) {
+  return Array.from(document.querySelectorAll(selector + '.sel'))
+    .map(function(el) { return el.textContent.trim(); });
+}
+
+// --- FORM VALIDATION ---
+function showErr(id, show) {
+  var el = document.getElementById(id);
+  if (el) el.style.display = show ? 'block' : 'none';
+}
+
+// --- CREATE PROFILE ---
+async function createProfile() {
+  var name  = document.getElementById('inp_name').value.trim();
+  var age   = document.getElementById('inp_age').value;
+  var size  = document.getElementById('inp_size').value;
+  var owner = document.getElementById('inp_owner').value.trim();
+  var zip   = document.getElementById('inp_zip').value.trim();
+
+  var ok = true;
+  showErr('err_name',  !name);  if (!name)  ok = false;
+  showErr('err_age',   !age);   if (!age)   ok = false;
+  showErr('err_size',  !size);  if (!size)  ok = false;
+  showErr('err_owner', !owner); if (!owner) ok = false;
+  showErr('err_zip',   !zip);   if (!zip)   ok = false;
+  if (!ok) { toast('Please fill in all required fields.'); return; }
+
+  var btn = document.getElementById('createBtn');
+  btn.disabled = true;
+  btn.textContent = 'Creating...';
+
+  try {
+    // Upload photo if we have one
+    var photoUrl = '';
+    var fileInput = document.getElementById('fileInput');
+    var file = fileInput.files[0];
+    if (file) {
+      document.getElementById('photoUploading').classList.add('show');
+      try {
+        photoUrl = await uploadPhotoToStorage(file);
+      } catch(e) {
+        photoUrl = pendingPhotoBase64;
+      }
+      document.getElementById('photoUploading').classList.remove('show');
+    }
+
+    var personality = getSelected('#traitGroup .topt');
+    var energy = getSelected('#energyGroup .topt');
+    var parks = getSelected('.popt');
+
+    var payload = {
+      device_token: getDeviceToken(),
+      name: name,
+      breed: document.getElementById('inp_breed').value.trim() || 'Mixed breed',
+      age: age,
+      size: size,
+      sex: document.getElementById('inp_sex').value || '',
+      personality: personality.join(', '),
+      energy: energy[0] || '',
+      parks: parks.join(', '),
+      bio: document.getElementById('inp_bio').value.trim(),
+      owner_name: owner,
+      neighborhood: zip,
+      photo_url: photoUrl,
+      is_east_side: EAST_SIDE_ZIPS.some(function(z) { return zip.includes(z); })
+    };
+
+    if (!isConfigured()) {
+      // Dev mode: save locally, show success
+      myId = 'local_' + Date.now();
+      myProfile = Object.assign({ id: myId }, payload);
+      localStorage.setItem('pm_myId', myId);
+      localStorage.setItem('pm_myProf', JSON.stringify(myProfile));
+      document.getElementById('createForm').style.display = 'none';
+      document.getElementById('createSuccess').style.display = 'block';
+      toast('Profile saved locally (dev mode - add Supabase credentials to go live)');
+      return;
+    }
+
+    var res = await fetch(
+      SUPA_URL + '/rest/v1/pup_profiles',
+      {
+        method: 'POST',
+        headers: Object.assign({}, getHeaders(), { 'Prefer': 'return=representation' }),
+        body: JSON.stringify(payload)
+      }
+    );
+    if (!res.ok) throw new Error(await res.text());
+    var data = await res.json();
+
+    if (data && data[0]) {
+      myId = data[0].id;
+      myProfile = data[0];
+      localStorage.setItem('pm_myId', myId);
+      localStorage.setItem('pm_myProf', JSON.stringify(myProfile));
+    }
+
+    document.getElementById('createForm').style.display = 'none';
+    document.getElementById('createSuccess').style.display = 'block';
+
+  } catch(err) {
+    console.error('Create profile error:', err);
+    toast('Could not save profile. Please try again.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Create My Pup\'s Profile';
+  }
+}
+
+// --- BROWSE ---
+async function loadBrowse() {
+  var c = document.getElementById('browseContainer');
+  c.innerHTML = '<div class="skeleton skel-card"></div><div class="skeleton skel-card" style="height:220px"></div>';
+
+  if (!isConfigured()) {
+    c.innerHTML = '<div style="text-align:center;padding:40px 20px"><div style="font-size:2.5rem;margin-bottom:14px;opacity:0.4">🐶</div><div style="font-family:Instrument Serif,serif;font-size:1.1rem;color:var(--text);margin-bottom:6px">Connect Supabase to see pups</div><div style="font-size:0.82rem;color:var(--text2);line-height:1.6">Add your SUPABASE_PROJECT_URL and SUPABASE_ANON_KEY to see real profiles from the Tucson community.</div></div>';
+    document.getElementById('browseCount').textContent = '0 pups';
+    return;
+  }
+
+  try {
+    var res = await fetch(
+      SUPA_URL + '/rest/v1/pup_profiles?select=*&order=created_at.desc',
+      { headers: getHeaders() }
+    );
+    if (!res.ok) throw new Error(await res.text());
+    allPups = await res.json();
+    renderPups();
+  } catch(err) {
+    c.innerHTML = '<div style="text-align:center;padding:36px 20px;color:var(--text2);font-size:0.84rem">Could not load profiles. Check your connection and try again.</div>';
+    console.error('Browse error:', err);
+  }
+}
+
+function renderPups() {
+  var others = allPups.filter(function(p) { return p.id !== myId; });
+
+  var filtered = others.filter(function(p) {
+    var sz = (p.size || '').toLowerCase();
+    var en = (p.energy || '').toLowerCase();
+    var nb = (p.neighborhood || '').toLowerCase();
+    if (activeFilter === 'east') {
+      return EAST_SIDE_ZIPS.some(function(z) { return nb.includes(z); }) || p.is_east_side;
+    }
+    if (activeFilter === 'small')    return sz.includes('small') || sz.includes('tiny');
+    if (activeFilter === 'medium')   return sz.includes('medium');
+    if (activeFilter === 'large')    return sz.includes('large') || sz.includes('xl');
+    if (activeFilter === 'energetic') return en.includes('high') || en.includes('turbo');
+    if (activeFilter === 'calm')     return en.includes('low') || en.includes('medium');
+    return true;
+  });
+
+  var c = document.getElementById('browseContainer');
+  document.getElementById('browseCount').textContent = filtered.length + (filtered.length === 1 ? ' pup' : ' pups');
+
+  if (!filtered.length) {
+    c.innerHTML = '<div style="text-align:center;padding:44px 20px"><div style="font-size:2.8rem;margin-bottom:14px;opacity:0.4">🐶</div><div style="font-family:Instrument Serif,serif;font-size:1.1rem;color:var(--text);margin-bottom:6px">No pups found</div><div style="font-size:0.82rem;color:var(--text2)">Try a different filter or be the first to create a profile!</div></div>';
+    return;
+  }
+
+  c.innerHTML = '';
+  filtered.forEach(function(pup, i) {
+    var matched = myMatches.includes(pup.id);
+    var isEast = pup.is_east_side || EAST_SIDE_ZIPS.some(function(z) { return (pup.neighborhood || '').includes(z); });
+    var tags = (pup.personality || '').split(',').slice(0, 3).filter(Boolean)
+      .map(function(t) { return '<span class="ptag">' + esc(t.trim()) + '</span>'; }).join('');
+    var energy = pup.energy ? '<span class="ptag e">' + esc(pup.energy) + '</span>' : '';
+
+    var card = document.createElement('div');
+    card.className = 'pup-card anim-fade';
+    card.style.animationDelay = (i * 0.04) + 's';
+
+    card.innerHTML =
+      '<div class="pc-img">' +
+        (pup.photo_url ? '<img src="' + esc(pup.photo_url) + '" alt="' + esc(pup.name) + '" loading="lazy"/>' : '🐶') +
+        '<div class="pc-live"><div class="pc-live-dot"></div>Active</div>' +
+        (isEast ? '<div class="pc-east">East Side</div>' : '') +
+      '</div>' +
+      '<div class="pc-body">' +
+        '<div class="pc-row1">' +
+          '<div class="pc-name">' + esc(pup.name) + '</div>' +
+          '<button class="pc-req-btn' + (matched ? ' sent' : '') + '" ' +
+            'onclick="event.stopPropagation();' + (matched ? '' : 'requestPlaydate(\'' + pup.id + '\')') + '"' +
+            ' aria-label="' + (matched ? 'Playdate already requested' : 'Request playdate with ' + esc(pup.name)) + '">' +
+            (matched ? 'Requested' : 'Request') +
+          '</button>' +
+        '</div>' +
+        '<div class="pc-breed">' + esc(pup.breed) + ' &middot; ' + esc(pup.age) + ' &middot; ' + esc(pup.size) + (pup.sex ? ' &middot; ' + esc(pup.sex) : '') + '</div>' +
+        '<div class="pc-tags">' + tags + energy + '</div>' +
+        '<div class="pc-footer">' +
+          esc(pup.owner_name) + '<div class="pc-sep"></div>' + esc(pup.neighborhood) +
+        '</div>' +
+      '</div>';
+
+    card.onclick = function() { openModal(pup); };
+    c.appendChild(card);
+  });
+}
+
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.fchip').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  renderPups();
+}
+
+// --- MODAL ---
+function openModal(pup) {
+  curViewPup = pup;
+  var photo = document.getElementById('modalPhoto');
+  photo.innerHTML = pup.photo_url
+    ? '<img src="' + esc(pup.photo_url) + '" alt="' + esc(pup.name) + '"/>'
+    : '🐶';
+
+  document.getElementById('modalPupName').textContent = pup.name || '';
+  document.getElementById('modalBreed').textContent =
+    (pup.breed || '') + ' \u00b7 ' + (pup.age || '') + ' \u00b7 ' + (pup.size || '') +
+    (pup.sex ? ' \u00b7 ' + pup.sex : '');
+
+  var tags = (pup.personality || '').split(',').filter(Boolean)
+    .map(function(t) { return '<span class="ptag">' + esc(t.trim()) + '</span>'; }).join('');
+  var energy = pup.energy ? '<span class="ptag e">' + esc(pup.energy) + '</span>' : '';
+  document.getElementById('modalTags').innerHTML = tags + energy;
+
+  var parks = (pup.parks || '').split(',').filter(Boolean)
+    .map(function(p) { return '<span class="ptag p">' + esc(p.trim()) + '</span>'; }).join('');
+  document.getElementById('modalParks').innerHTML = parks || '<span style="color:var(--text3);font-size:0.78rem">No parks listed</span>';
+
+  document.getElementById('modalBio').textContent = pup.bio || 'No bio yet!';
+  document.getElementById('modalOwner').textContent = (pup.owner_name || '') + ' \u00b7 ' + (pup.neighborhood || '');
+
+  var matched = myMatches.includes(pup.id);
+  var btn = document.getElementById('modalMatchBtn');
+  btn.textContent = matched ? 'Playdate Already Requested' : 'Request a Playdate';
+  btn.className = 'sheet-main-btn' + (matched ? ' sent' : '');
+
+  document.getElementById('modalBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modalBackdrop')) return;
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function sendRequest() {
+  if (!curViewPup) return;
+  if (myMatches.includes(curViewPup.id)) {
+    toast('Already requested a playdate with ' + curViewPup.name);
+    return;
+  }
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+  requestPlaydate(curViewPup.id);
+}
+
+// --- PLAYDATE REQUEST ---
+async function requestPlaydate(pupId) {
+  var pup = allPups.find(function(p) { return p.id === pupId; }) || { id: pupId, name: 'New Friend', breed: '', photo_url: '' };
+  if (myMatches.includes(pupId)) return;
+
+  myMatches.push(pupId);
+  localStorage.setItem('pm_matches', JSON.stringify(myMatches));
+  updateMatchDot();
+  renderPups();
+
+  // Write real DB row if configured
+  if (isConfigured() && myId) {
+    try {
+      await fetch(
+        SUPA_URL + '/rest/v1/playdate_requests',
+        {
+          method: 'POST',
+          headers: Object.assign({}, getHeaders(), { 'Prefer': 'return=minimal' }),
+          body: JSON.stringify({
+            from_pup_id: myId,
+            to_pup_id: pupId,
+            status: 'pending'
+          })
+        }
+      );
+    } catch(err) {
+      console.error('Request write error:', err);
+    }
+  }
+
+  showMatchCelebration(myProfile, pup);
+}
+
+// --- MATCH CELEBRATION ---
+function showMatchCelebration(mine, theirs) {
+  var pa = document.getElementById('matchPhotoA');
+  pa.innerHTML = mine && mine.photo_url
+    ? '<img src="' + esc(mine.photo_url) + '" alt="' + esc(mine.name) + '"/>'
+    : '🐶';
+  document.getElementById('matchNameA').textContent = mine ? (mine.name || 'Your Pup') : 'Your Pup';
+  document.getElementById('matchBreedA').textContent = mine ? (mine.breed || '') : '';
+
+  var pb = document.getElementById('matchPhotoB');
+  pb.innerHTML = theirs && theirs.photo_url
+    ? '<img src="' + esc(theirs.photo_url) + '" alt="' + esc(theirs.name) + '"/>'
+    : '🐶';
+  document.getElementById('matchNameB').textContent = theirs ? (theirs.name || 'New Friend') : 'New Friend';
+  document.getElementById('matchBreedB').textContent = theirs ? (theirs.breed || '') : '';
+
+  spawnConfetti();
+  document.getElementById('matchOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMatch() {
+  document.getElementById('matchOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function spawnConfetti() {
+  var wrap = document.getElementById('confettiWrap');
+  wrap.innerHTML = '';
+  var colors = ['#FF5C6C', '#F5C040', '#9B7FFF', '#00CDB4', '#2DCB7A', '#FF8090'];
+  for (var i = 0; i < 60; i++) {
+    var el = document.createElement('div');
+    el.className = 'conf-piece';
+    var size = 5 + Math.random() * 8;
+    el.style.cssText =
+      'left:' + (Math.random() * 100) + '%;' +
+      'top:-20px;' +
+      'width:' + size + 'px;' +
+      'height:' + size + 'px;' +
+      'background:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
+      'border-radius:' + (Math.random() > 0.5 ? '50%' : '2px') + ';' +
+      'animation-duration:' + (1.4 + Math.random() * 2) + 's;' +
+      'animation-delay:' + (Math.random() * 1.2) + 's;';
+    wrap.appendChild(el);
+  }
+}
+
+// --- SAFETY CHECKLIST ---
+function openSafety() {
+  document.getElementById('safetyBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  updateSafetyBtn();
+}
+
+function closeSafety() {
+  document.getElementById('safetyBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function toggleCheck(id) {
+  var el = document.getElementById(id);
+  var checked = !el.classList.contains('checked');
+  el.classList.toggle('checked', checked);
+  el.textContent = checked ? '\u2713' : '';
+  el.setAttribute('aria-checked', checked ? 'true' : 'false');
+  updateSafetyBtn();
+}
+
+function onLocationChange() {
+  var val = document.getElementById('meetupLocation').value;
+  var cautionBox = document.getElementById('cautionBox');
+  var cautionRow = document.getElementById('cautionRow');
+  var chk4 = document.getElementById('chk4');
+
+  if (val === 'caution') {
+    cautionBox.style.display = 'block';
+    cautionRow.style.display = 'flex';
+  } else {
+    cautionBox.style.display = 'none';
+    cautionRow.style.display = 'none';
+    chk4.classList.remove('checked');
+    chk4.textContent = '';
+    chk4.setAttribute('aria-checked', 'false');
+  }
+  updateSafetyBtn();
+}
+
+function updateSafetyBtn() {
+  var loc = document.getElementById('meetupLocation').value;
+  var c1 = document.getElementById('chk1').classList.contains('checked');
+  var c2 = document.getElementById('chk2').classList.contains('checked');
+  var c3 = document.getElementById('chk3').classList.contains('checked');
+  var c4 = loc === 'caution'
+    ? document.getElementById('chk4').classList.contains('checked')
+    : true;
+  document.getElementById('safetyConfirmBtn').disabled = !(loc && c1 && c2 && c3 && c4);
+}
+
+function confirmSafety() {
+  closeSafety();
+  document.getElementById('confirmOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeConfirm() {
+  document.getElementById('confirmOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// --- MATCHES ---
+function loadMatches() {
+  var c = document.getElementById('matchesContainer');
+  if (!myMatches.length) {
+    c.innerHTML =
+      '<div class="empty-state">' +
+        '<div class="empty-emoji">&#9825;</div>' +
+        '<div class="empty-title">No matches yet</div>' +
+        '<div class="empty-sub">Browse pups and request a playdate. Your connections will appear here.</div>' +
+      '</div>';
+    return;
+  }
+
+  c.innerHTML =
+    '<div class="safety-note"><strong>Safety First</strong>Always meet at a public East Side dog park. Complete the Safety Checklist before your first meetup.</div>' +
+    '<button onclick="openSafety()" style="width:100%;background:var(--teal);color:var(--bg);font-family:Outfit,sans-serif;font-weight:800;font-size:0.88rem;padding:13px;border-radius:var(--radius-sm);border:none;cursor:pointer;margin-bottom:14px;letter-spacing:0.04em;">Open Safety Checklist</button>' +
+    '<div style="font-family:Instrument Serif,serif;color:var(--text2);font-size:0.95rem;margin-bottom:11px;">Playdate Requests (' + myMatches.length + ')</div>';
+
+  myMatches.forEach(function(id, i) {
+    var pup = allPups.find(function(p) { return p.id === id; });
+    var name = pup ? esc(pup.name) : 'Pup #' + (i + 1);
+    var div = document.createElement('div');
+    div.className = 'match-request-card';
+    div.innerHTML =
+      '<div class="mrc-title">Request to ' + name + '</div>' +
+      '<div class="mrc-status">Pending - waiting for the other owner to respond</div>' +
+      '<div class="mrc-actions">' +
+        '<button class="mrc-btn safety" onclick="openSafety()">Safety Checklist</button>' +
+      '</div>';
+    c.appendChild(div);
+  });
+}
+
+function updateMatchDot() {
+  var dot = document.getElementById('matchDot');
+  if (dot) dot.className = 'tab-dot' + (myMatches.length > 0 ? ' show' : '');
+}
+
+// --- WATCH BOARD ---
+function setOutcome(type) {
+  watchOutcome = type;
+  document.getElementById('outSafe').classList.toggle('sel', type === 'safe');
+  document.getElementById('outSafe').setAttribute('aria-pressed', type === 'safe' ? 'true' : 'false');
+  document.getElementById('outConcern').classList.toggle('sel', type === 'concern');
+  document.getElementById('outConcern').setAttribute('aria-pressed', type === 'concern' ? 'true' : 'false');
+}
+
+async function submitWatch() {
+  if (!watchOutcome) { toast('Please select Made it home safely or Report an issue.'); return; }
+  var pupName   = document.getElementById('watch_pup').value.trim();
+  var ownerName = document.getElementById('watch_owner').value.trim();
+  if (!pupName || !ownerName) { toast('Please enter your pup name and your first name.'); return; }
+
+  var btn = document.getElementById('watchSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Posting...';
+
+  var payload = {
+    pup_name: pupName,
+    owner_name: ownerName,
+    outcome: watchOutcome === 'safe' ? 'Made it home safely' : 'Reported an issue',
+    note: document.getElementById('watch_note').value.trim(),
+    is_safe: watchOutcome === 'safe'
+  };
+
+  if (!isConfigured()) {
+    toast('Report saved (add Supabase credentials to post live)');
+    btn.disabled = false;
+    btn.textContent = 'Post to Safety Board';
+    return;
+  }
+
+  try {
+    var res = await fetch(
+      SUPA_URL + '/rest/v1/safety_watchboard',
+      {
+        method: 'POST',
+        headers: Object.assign({}, getHeaders(), { 'Prefer': 'return=minimal' }),
+        body: JSON.stringify(payload)
+      }
+    );
+    if (!res.ok) throw new Error(await res.text());
+    toast('Thank you! Your report helps the whole East Side community.');
+    document.getElementById('watch_pup').value = '';
+    document.getElementById('watch_owner').value = '';
+    document.getElementById('watch_note').value = '';
+    watchOutcome = null;
+    document.getElementById('outSafe').classList.remove('sel');
+    document.getElementById('outConcern').classList.remove('sel');
+    loadWatch();
+  } catch(err) {
+    toast('Could not post. Please try again.');
+    console.error('Watch submit error:', err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Post to Safety Board';
+  }
+}
+
+async function loadWatch() {
+  var c = document.getElementById('watchBoardContainer');
+
+  if (!isConfigured()) {
+    c.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:0.82rem">Connect Supabase to see community safety reports.</div>';
+    return;
+  }
+
+  try {
+    var res = await fetch(
+      SUPA_URL + '/rest/v1/safety_watchboard?select=*&order=created_at.desc&limit=25',
+      { headers: getHeaders() }
+    );
+    if (!res.ok) throw new Error(await res.text());
+    var reports = await res.json();
+
+    if (!reports.length) {
+      c.innerHTML = '<div style="text-align:center;padding:22px;color:var(--text3);font-size:0.82rem">No reports yet. Be the first to post your playdate outcome!</div>';
+      return;
+    }
+
+    c.innerHTML = '<div style="font-size:0.65rem;font-weight:800;letter-spacing:0.13em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;">Recent Safety Reports</div>';
+    reports.forEach(function(r) {
+      var ago = Math.floor((Date.now() - new Date(r.created_at)) / 60000);
+      var ts = ago < 60 ? ago + 'm ago' : Math.floor(ago / 60) + 'h ago';
+      var card = document.createElement('div');
+      card.className = 'watch-card ' + (r.is_safe ? 'safe' : 'concern');
+      card.innerHTML =
+        '<div class="wc-row">' +
+          '<div class="wc-dot ' + (r.is_safe ? 'safe' : 'concern') + '"></div>' +
+          '<div class="wc-name">' + esc(r.pup_name) + ' (' + esc(r.owner_name) + ')</div>' +
+          '<div class="wc-time">' + ts + '</div>' +
+        '</div>' +
+        '<div class="wc-outcome">' + (r.is_safe ? '\u2705' : '\u26a0\ufe0f') + ' ' + esc(r.outcome) + '</div>' +
+        (r.note ? '<div class="wc-note">&ldquo;' + esc(r.note) + '&rdquo;</div>' : '');
+      c.appendChild(card);
+    });
+  } catch(err) {
+    c.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:0.82rem">Could not load safety reports.</div>';
+    console.error('Watch load error:', err);
+  }
+}
+
+// --- MY PUP TAB ---
+function loadMyProfile() {
+  var c = document.getElementById('myPupContainer');
+  if (!myProfile) {
+    c.innerHTML =
+      '<div class="empty-state">' +
+        '<div class="empty-emoji">🐾</div>' +
+        '<div class="empty-title">No profile yet</div>' +
+        '<div class="empty-sub">Create your pup\'s profile to get started!</div>' +
+      '</div>' +
+      '<button class="sbtn" onclick="switchTab(\'Create\')">Create Profile</button>';
+    return;
+  }
+
+  var p = myProfile;
+  c.innerHTML =
+    '<div class="my-profile-card">' +
+      '<div class="my-profile-photo">' +
+        (p.photo_url ? '<img src="' + esc(p.photo_url) + '" alt="' + esc(p.name) + '"/>' : '🐶') +
+      '</div>' +
+      '<div class="my-profile-body">' +
+        '<div class="my-profile-name">' + esc(p.name) + '</div>' +
+        '<div class="my-profile-breed">' + esc(p.breed) + ' &middot; ' + esc(p.age) + ' &middot; ' + esc(p.size) + '</div>' +
+        '<div class="my-action-row">' +
+          '<button class="my-btn edit" onclick="editProfile()">Edit Profile</button>' +
+          '<button class="my-btn delete" onclick="deleteProfile()">Remove Pup</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="info-note">' +
+      '<strong>Your Privacy</strong>' +
+      'Owner: ' + esc(p.owner_name) + ' &middot; Location: ' + esc(p.neighborhood) + '<br>' +
+      'Playdate requests sent: ' + myMatches.length +
+    '</div>';
+}
+
+function editProfile() {
+  if (!myProfile) return;
+  var p = myProfile;
+  document.getElementById('inp_name').value = p.name || '';
+  document.getElementById('inp_breed').value = p.breed || '';
+  document.getElementById('inp_bio').value = p.bio || '';
+  document.getElementById('inp_owner').value = p.owner_name || '';
+  document.getElementById('inp_zip').value = p.neighborhood || '';
+  document.getElementById('createForm').style.display = 'block';
+  document.getElementById('createSuccess').style.display = 'none';
+  switchTab('Create');
+  toast('Edit your details and save again.');
+}
+
+async function deleteProfile() {
+  if (!confirm('Remove your pup from PawMatch?\n\nThis cannot be undone.')) return;
+
+  if (isConfigured() && myId && !myId.startsWith('local_')) {
+    try {
+      await fetch(
+        SUPA_URL + '/rest/v1/pup_profiles?id=eq.' + myId,
+        { method: 'DELETE', headers: getHeaders() }
+      );
+    } catch(err) {
+      console.error('Delete error:', err);
+    }
+  }
+
+  myId = null; myProfile = null; myMatches = [];
+  localStorage.removeItem('pm_myId');
+  localStorage.removeItem('pm_myProf');
+  localStorage.removeItem('pm_matches');
+  updateMatchDot();
+  loadMyProfile();
+  toast('Pup removed from PawMatch.');
+}
+
+// --- VIDEO UPLOAD ---
+function handleVideoUpload(input) {
+  var file = input.files[0];
+  if (!file) return;
+  if (file.size > 52428800) { toast('Video must be under 50MB.'); return; }
+  toast('Video received! Full sharing coming in the next update.');
+  input.value = '';
+}
+
+// --- KEYBOARD ACCESSIBILITY ---
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.getElementById('modalBackdrop').classList.remove('open');
+    document.getElementById('safetyBackdrop').classList.remove('open');
+    document.getElementById('matchOverlay').classList.remove('show');
+    document.getElementById('confirmOverlay').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+});
+
+// Keyboard support for topt spans
+document.querySelectorAll('.topt').forEach(function(el) {
+  el.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      el.click();
+    }
+  });
+});
+
+// Keyboard support for check boxes
+document.querySelectorAll('.check-box').forEach(function(el) {
+  el.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      el.click();
+    }
+  });
+});
+
+// Photo zone keyboard
+document.getElementById('photoZone').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handlePhotoClick(); }
+});
+
+// --- INIT ---
+(function init() {
+  updateMatchDot();
+  loadWatch();
+})();
+
+</script>
+
+<!-- ===================== SUPABASE SQL REFERENCE =====================
+This block is for reference only. Run these SQL commands in your
+Supabase Dashboard > SQL Editor before going live.
+
+CREATE TABLE pup_profiles (
+  id            uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  device_token  text,
+  name          text NOT NULL,
+  breed         text DEFAULT 'Mixed breed',
+  age           text,
+  size          text,
+  sex           text,
+  personality   text,
+  energy        text,
+  parks         text,
+  bio           text,
+  owner_name    text NOT NULL,
+  neighborhood  text NOT NULL,
+  photo_url     text DEFAULT '',
+  is_east_side  boolean DEFAULT false,
+  created_at    timestamptz DEFAULT now()
+);
+
+CREATE TABLE playdate_requests (
+  id           uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  from_pup_id  uuid REFERENCES pup_profiles(id) ON DELETE CASCADE,
+  to_pup_id    uuid REFERENCES pup_profiles(id) ON DELETE CASCADE,
+  status       text DEFAULT 'pending' CHECK (status IN ('pending','accepted','declined')),
+  message      text,
+  created_at   timestamptz DEFAULT now(),
+  UNIQUE(from_pup_id, to_pup_id)
+);
+
+CREATE TABLE safety_watchboard (
+  id          uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  pup_name    text NOT NULL,
+  owner_name  text NOT NULL,
+  outcome     text NOT NULL,
+  note        text,
+  is_safe     boolean DEFAULT true,
+  created_at  timestamptz DEFAULT now()
+);
+
+-- Enable Row Level Security on all tables
+ALTER TABLE pup_profiles       ENABLE ROW LEVEL SECURITY;
+ALTER TABLE playdate_requests  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE safety_watchboard  ENABLE ROW LEVEL SECURITY;
+
+-- pup_profiles: anyone can read, anon can insert
+CREATE POLICY "Public read profiles"   ON pup_profiles FOR SELECT USING (true);
+CREATE POLICY "Anon insert profiles"   ON pup_profiles FOR INSERT WITH CHECK (true);
+CREATE POLICY "Device delete own"      ON pup_profiles FOR DELETE USING (device_token = current_setting('request.headers')::json->>'x-device-token');
+
+-- playdate_requests: anyone can read, insert
+CREATE POLICY "Public read requests"   ON playdate_requests FOR SELECT USING (true);
+CREATE POLICY "Anon insert requests"   ON playdate_requests FOR INSERT WITH CHECK (true);
+
+-- safety_watchboard: anyone can read, insert
+CREATE POLICY "Public read watchboard" ON safety_watchboard FOR SELECT USING (true);
+CREATE POLICY "Anon insert watchboard" ON safety_watchboard FOR INSERT WITH CHECK (true);
+
+-- Storage bucket (create in Dashboard > Storage > New Bucket)
+-- Bucket name: pup-photos
+-- Set to PUBLIC
+-- File size limit: 8MB
+-- Allowed MIME types: image/jpeg, image/png, image/webp, image/gif
+===================== END SQL REFERENCE ===================== -->
+
+</body>
+</html>
