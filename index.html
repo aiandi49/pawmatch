@@ -1869,7 +1869,7 @@ body.light::after { opacity: 0.015; }
     </div>
     <div class="frow">
       <label class="flabel" for="contact_email">Your Email *</label>
-      <input class="finput" type="email" id="contact_email" placeholder="your@email.com" maxlength="120" autocomplete="email"/>
+      <input class="finput" type="email" id="contact_email" placeholder="lamarmyers49@email.com" maxlength="120" autocomplete="email"/>
     </div>
     <div class="frow">
       <label class="flabel" for="contact_type">Message Type</label>
@@ -3192,7 +3192,7 @@ async function sendContactMessage() {
   var body = 'From: ' + (name || 'Anonymous') + '\nEmail: ' + email + '\nType: ' + (typeLabels[type] || type) + '\n\n' + msg + '\n\n---\nSent via PawMatch app · pawmatch-seven.vercel.app';
 
   try {
-    if (RESEND_API_KEY === 'YOUR_RESEND_API_KEY') {
+    if (RESEND_API_KEY === 're_Qj6paEDW_3UUrR18CrpapSwQ8PgDxUjNi') {
       // Dev mode fallback — copy to clipboard instead
       var formatted = subject + '\n\n' + body;
       if (navigator.clipboard) {
