@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0A0A10">
-<meta name="description" content="PawMatch - Tucson's premier dog playdate matching app. East Side Tucson, 85710.">
+<meta name="description" content="PawMatch - Tucson's dog playdate matching app. Connect your pup with compatible playmates in your neighborhood. Privacy-first, free forever."
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PawMatch">
-<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22PawMatch%20Tucson%22%2C%22short_name%22%3A%22PawMatch%22%2C%22description%22%3A%22Tucson%20East%20Side%20dog%20playdate%20matching%20app%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230A0A10%22%2C%22theme_color%22%3A%22%230A0A10%22%2C%22orientation%22%3A%22portrait%22%7D">
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22PawMatch%20Tucson%22%2C%22short_name%22%3A%22PawMatch%22%2C%22description%22%3A%22Tucson%20dog%20playdate%20matching%20app%22%2C%22start_url%22%3A%22%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230A0A10%22%2C%22theme_color%22%3A%22%230A0A10%22%2C%22orientation%22%3A%22portrait%22%7D">
 <title>PawMatch - Tucson Dog Playdate Matching</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -963,6 +963,30 @@ footer {
 @media (max-width: 380px) {
   .hero-title { font-size: 1.85rem; }
   .fg2 { grid-template-columns: 1fr; }
+  .tab-label { font-size: 0.55rem; }
+  .admin-stat-row { gap: 6px; }
+}
+
+/* ── TABLET / LARGER PHONES (481px – 768px) ── */
+@media (min-width: 481px) and (max-width: 768px) {
+  .page { max-width: 540px; }
+  nav { max-width: 100%; }
+  .tabs { max-width: 540px; }
+  .hero { padding: 40px 28px 64px; }
+  .hero-title { font-size: 2.8rem; }
+  .hero-sub { max-width: 340px; }
+  .fg2 { grid-template-columns: 1fr 1fr; }
+  .parks-g { grid-template-columns: 1fr 1fr 1fr; }
+  .card-inner { padding: 20px; }
+}
+
+/* ── WIDE SCREENS (769px+) — keep content centered and readable ── */
+@media (min-width: 769px) {
+  .page { max-width: 520px; }
+  .tabs { max-width: 520px; }
+  .hero { padding: 48px 32px 72px; }
+  .hero-title { font-size: 3rem; }
+  nav { padding: 0 24px; }
 }
 
 /* ── LIGHT THEME ── */
@@ -1225,10 +1249,18 @@ body.light::after { opacity: 0.015; }
 
 <!-- NAV -->
 <nav>
-  <a class="logo" href="#" id="logoTap" onclick="handleLogoTap(event)" aria-label="PawMatch home">
-    <div class="logo-paw"></div>
-    PawMatch
-  </a>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <a href="https://pethub-tucson.vercel.app" aria-label="Back to PetHub"
+      style="display:inline-flex;align-items:center;gap:5px;font-size:0.68rem;font-weight:700;letter-spacing:0.06em;color:var(--text2);background:var(--surface);border:1px solid var(--border2);padding:4px 9px;border-radius:20px;text-decoration:none;transition:color 0.18s,border-color 0.18s;white-space:nowrap;"
+      onmouseover="this.style.color='var(--red)';this.style.borderColor='rgba(255,92,108,0.35)'"
+      onmouseout="this.style.color='var(--text2)';this.style.borderColor='var(--border2)'">
+      &#8592; Hub
+    </a>
+    <a class="logo" href="#" id="logoTap" onclick="handleLogoTap(event)" aria-label="PawMatch home">
+      <div class="logo-paw"></div>
+      PawMatch
+    </a>
+  </div>
   <div class="nav-right">
     <div class="location-badge">East Side <span>85710</span></div>
     <button id="themeToggle" onclick="toggleTheme()" aria-label="Toggle light/dark theme"
@@ -1534,7 +1566,7 @@ body.light::after { opacity: 0.015; }
   </div>
 
   <footer>
-    <a class="footer-link" href="https://tucson-pet-finder.vercel.app">Back to Tucson Pet Finder</a>
+    <a class="footer-link" href="https://pethub-tucson.vercel.app">&#8592; Back to PetHub</a>
     <div class="footer-copy">
       PawMatch Tucson - East Side 85710<br>
       Built by Lamar Myers - VTREI, LLC - AI&amp;I<br>
@@ -2148,6 +2180,13 @@ async function createProfile() {
   showErr('err_zip',   !zip);   if (!zip)   ok = false;
   if (!ok) { toast('Please fill in all required fields.'); return; }
 
+  // Soft zip warning — nudge but don't block non-East-Side users
+  var isEastSide = EAST_SIDE_ZIPS.some(function(z) { return zip.includes(z); });
+  if (!isEastSide && !isEditMode) {
+    var proceed = confirm('PawMatch is focused on Tucson — it looks like your zip (' + zip + ') may be outside the core East Side area.\n\nYou can still join! Your profile will be visible to the whole Tucson community.\n\nTap OK to continue or Cancel to update your zip.');
+    if (!proceed) return;
+  }
+
   var btn = document.getElementById('createBtn');
   btn.disabled = true;
   btn.textContent = 'Creating...';
@@ -2589,6 +2628,25 @@ function closeConfirm() {
 // --- MATCHES ---
 async function loadMatches() {
   var c = document.getElementById('matchesContainer');
+
+  // Recover matches from Supabase if localStorage was cleared
+  if (!myMatches.length && isConfigured() && myId) {
+    try {
+      var recoverRes = await fetch(
+        SUPA_URL + '/rest/v1/playdate_requests?from_pup_id=eq.' + myId + '&select=to_pup_id,status',
+        { headers: getHeaders() }
+      );
+      if (recoverRes.ok) {
+        var rows = await recoverRes.json();
+        if (rows && rows.length) {
+          myMatches = rows.map(function(r) { return r.to_pup_id; });
+          localStorage.setItem('pm_matches', JSON.stringify(myMatches));
+          updateMatchDot();
+        }
+      }
+    } catch(e) {}
+  }
+
   if (!myMatches.length) {
     c.innerHTML =
       '<div class="empty-state">' +
@@ -3004,14 +3062,46 @@ function handleLogoTap(e) {
 
 // ── PIN ──
 var ADMIN_PIN_KEY = 'pm_admin_pin';
+var ADMIN_LOCK_KEY = 'pm_admin_lock';
+var ADMIN_ATTEMPTS_KEY = 'pm_admin_attempts';
 var adminPinBuffer = '';
-var adminPinDefault = '000000';
+// Secure default — owner MUST change this on first login via the Change PIN button
+var adminPinDefault = '472819';
 
 function getAdminPin() {
   return localStorage.getItem(ADMIN_PIN_KEY) || adminPinDefault;
 }
 
+function isAdminLocked() {
+  var lockUntil = parseInt(localStorage.getItem(ADMIN_LOCK_KEY) || '0', 10);
+  return Date.now() < lockUntil;
+}
+
+function getAdminLockRemaining() {
+  var lockUntil = parseInt(localStorage.getItem(ADMIN_LOCK_KEY) || '0', 10);
+  return Math.max(0, Math.ceil((lockUntil - Date.now()) / 1000));
+}
+
+function recordFailedAttempt() {
+  var attempts = parseInt(localStorage.getItem(ADMIN_ATTEMPTS_KEY) || '0', 10) + 1;
+  localStorage.setItem(ADMIN_ATTEMPTS_KEY, String(attempts));
+  if (attempts >= 5) {
+    // Lock for 10 minutes after 5 failed attempts
+    localStorage.setItem(ADMIN_LOCK_KEY, String(Date.now() + 10 * 60 * 1000));
+    localStorage.setItem(ADMIN_ATTEMPTS_KEY, '0');
+  }
+}
+
+function clearFailedAttempts() {
+  localStorage.removeItem(ADMIN_ATTEMPTS_KEY);
+  localStorage.removeItem(ADMIN_LOCK_KEY);
+}
+
 function openAdminPin() {
+  if (isAdminLocked()) {
+    toast('Too many failed attempts. Try again in ' + getAdminLockRemaining() + ' seconds.');
+    return;
+  }
   adminPinBuffer = '';
   updatePinDots();
   document.getElementById('adminPinErr').textContent = '';
@@ -3043,11 +3133,24 @@ function updatePinDots() {
   }
 }
 function checkAdminPin() {
+  if (isAdminLocked()) {
+    closeAdminPin();
+    toast('Admin access locked. Try again in ' + getAdminLockRemaining() + ' seconds.');
+    return;
+  }
   if (adminPinBuffer === getAdminPin()) {
+    clearFailedAttempts();
     closeAdminPin();
     openAdminPanel();
   } else {
-    document.getElementById('adminPinErr').textContent = 'Incorrect PIN. Try again.';
+    recordFailedAttempt();
+    var remaining = 5 - parseInt(localStorage.getItem(ADMIN_ATTEMPTS_KEY) || '0', 10);
+    var errEl = document.getElementById('adminPinErr');
+    if (isAdminLocked()) {
+      errEl.textContent = 'Too many attempts. Locked for 10 minutes.';
+    } else {
+      errEl.textContent = 'Incorrect PIN. ' + Math.max(0, remaining) + ' attempt' + (remaining === 1 ? '' : 's') + ' remaining.';
+    }
     adminPinBuffer = '';
     updatePinDots();
     for (var i = 0; i < 6; i++) {
@@ -3081,6 +3184,12 @@ function openAdminPanel() {
   var notes = localStorage.getItem('pm_admin_notes') || '';
   var ta = document.getElementById('adminNotes');
   if (ta) ta.value = notes;
+  // Prompt to change default PIN on first use
+  if (!localStorage.getItem(ADMIN_PIN_KEY)) {
+    setTimeout(function() {
+      toast('⚠️ Security: Please change your default admin PIN now — tap "Change Admin PIN" below.');
+    }, 600);
+  }
 }
 function closeAdminPanel() {
   document.getElementById('adminPanelOverlay').classList.remove('open');
@@ -3273,7 +3382,25 @@ window.addEventListener('appinstalled', function() {
   loadWatch();
   // Register service worker for PWA offline support
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('data:application/javascript,self.addEventListener("fetch",function(e){e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request)}))})').catch(function(){});
+    try {
+      var swCode = [
+        'var CACHE="pawmatch-v1";',
+        'self.addEventListener("install",function(e){self.skipWaiting();});',
+        'self.addEventListener("activate",function(e){',
+        '  e.waitUntil(caches.keys().then(function(k){',
+        '    return Promise.all(k.filter(function(n){return n!==CACHE;}).map(function(n){return caches.delete(n);}));',
+        '  }));self.clients.claim();',
+        '});',
+        'self.addEventListener("fetch",function(e){',
+        '  if(e.request.method!=="GET")return;',
+        '  e.respondWith(fetch(e.request).then(function(r){',
+        '    var rc=r.clone();caches.open(CACHE).then(function(c){c.put(e.request,rc);});return r;',
+        '  }).catch(function(){return caches.match(e.request);}));',
+        '});'
+      ].join('');
+      var swBlob = new Blob([swCode],{type:'application/javascript'});
+      navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(function(){});
+    } catch(e) {}
   }
 })();
 
