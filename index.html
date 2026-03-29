@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0A0A10">
-<meta name="description" content="PawMatch - Tucson's dog playdate matching app. Connect your pup with compatible playmates in your neighborhood. Privacy-first, free forever."
+<meta name="description" content="PawMatch - Tucson's dog playdate matching app. Connect your pup with compatible playmates in your neighborhood. Privacy-first, free forever.">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -63,7 +63,23 @@ body {
   line-height: 1.55;
   min-height: 100vh;
   overflow-x: hidden;
+  /* Prevent elastic bounce scroll on iOS from exposing background */
+  overscroll-behavior: none;
 }
+
+/* ── MOBILE TOUCH TARGETS — Apple HIG: min 44×44px ── */
+button, [role="button"], .topt, .popt, .fchip, .tab, .check-box {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation; /* Removes 300ms tap delay */
+}
+/* Smaller decorative elements that shouldn't be 44px tall */
+.pill, .pc-live, .pc-east, .ptag, .sh-count, .card-label { min-height: unset; min-width: unset; }
+/* Inline tag options still need a good tap area via padding */
+.topt { min-height: 40px; display: inline-flex; align-items: center; }
+
+/* Smooth momentum scroll on iOS for overflow containers */
+.modal-sheet, .safety-sheet, .contact-sheet, .admin-panel-body, .admin-body { -webkit-overflow-scrolling: touch; }
 
 /* subtle noise texture */
 body::after {
@@ -89,6 +105,10 @@ nav {
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
+  /* iPhone notch support */
+  padding-top: env(safe-area-inset-top);
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
 }
 .logo {
   display: flex;
@@ -123,7 +143,7 @@ nav {
 .page {
   max-width: 480px;
   margin: 0 auto;
-  padding: var(--nav-h) 0 calc(var(--tab-h) + 16px);
+  padding: var(--nav-h) 0 calc(var(--tab-h) + 16px + env(safe-area-inset-bottom));
   position: relative;
   z-index: 1;
 }
@@ -229,6 +249,8 @@ nav {
   display: flex;
   align-items: stretch;
   padding: 0 4px;
+  /* iPhone home bar support */
+  padding-bottom: env(safe-area-inset-bottom);
 }
 .tab {
   flex: 1;
@@ -326,7 +348,7 @@ nav {
   border-radius: var(--radius-sm);
   padding: 11px 13px;
   font-family: 'Outfit', sans-serif;
-  font-size: 0.92rem;
+  font-size: 16px; /* Must be 16px+ to prevent iOS auto-zoom on focus */
   font-weight: 500;
   color: var(--text);
   outline: none;
@@ -748,7 +770,7 @@ nav {
   width: 100%; background: var(--bg2);
   border: 1px solid var(--border2); border-radius: var(--radius-sm);
   padding: 11px 13px; font-family: 'Outfit', sans-serif;
-  font-size: 0.9rem; color: var(--text); outline: none;
+  font-size: 16px; /* 16px+ prevents iOS auto-zoom */ color: var(--text); outline: none;
   -webkit-appearance: none; appearance: none;
   margin: 8px 0; transition: border-color 0.18s; cursor: pointer;
 }
@@ -828,7 +850,7 @@ nav {
   width: 100%; background: var(--bg2);
   border: 1px solid var(--border2); border-radius: var(--radius-sm);
   padding: 10px 13px; font-family: 'Outfit', sans-serif;
-  font-size: 0.87rem; color: var(--text); outline: none;
+  font-size: 16px; /* 16px+ prevents iOS auto-zoom */ color: var(--text); outline: none;
   margin-bottom: 7px; transition: border-color 0.18s;
   -webkit-appearance: none;
 }
@@ -986,7 +1008,7 @@ footer {
   .tabs { max-width: 520px; }
   .hero { padding: 48px 32px 72px; }
   .hero-title { font-size: 3rem; }
-  nav { padding: 0 24px; }
+  nav { padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); }
 }
 
 /* ── LIGHT THEME ── */
@@ -1228,8 +1250,8 @@ body.light::after { opacity: 0.015; }
 /* ── CONTACT FLOATING BUTTON ── */
 .contact-fab {
   position: fixed;
-  bottom: calc(var(--tab-h) + 14px);
-  right: 16px;
+  bottom: calc(var(--tab-h) + 14px + env(safe-area-inset-bottom));
+  right: max(16px, env(safe-area-inset-right));
   width: 42px; height: 42px;
   background: var(--surface2);
   border: 1px solid var(--border2);
